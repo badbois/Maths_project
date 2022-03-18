@@ -3,9 +3,7 @@
 int main() {
   auto ctx = p6::Context{};
   p6::Angle rotation = 0.011_turn;
-  ctx.mouse_scrolled = [&](p6::MouseScroll e) {
-    rotation += e.dy * 0.025_turn;
-  };
+  ctx.mouse_scrolled = [&](p6::MouseScroll e) { rotation += e.dy * 0.01_turn; };
   ctx.update = [&]() {
     ctx.background({});
     ctx.stroke = {1, 1, 1, 1};
