@@ -1,31 +1,24 @@
+#include <iostream>
 #include <p6/p6.h>
 
 int main() {
-  auto ctx = p6::Context{};
+  auto ctx = p6::Context{{720, 720, "My p6 project"}};
+  float pas = 1 / 4.0;
   p6::Angle rotation = 0.011_turn;
-  ctx.mouse_scrolled = [&](p6::MouseScroll e) { rotation += e.dy * 0.01_turn; };
+  float time = 0;
+  ctx.use_stroke = false;
   ctx.update = [&]() {
-    ctx.background({});
-    ctx.stroke = {1, 1, 1, 1};
-    // White square positioned by Center
-    ctx.square(p6::Center{ctx.mouse()}, p6::Radius{0.3f},
-               p6::Rotation{rotation});
-    // Red square positioned by Top Left Corner
-    ctx.fill = {1, 0, 0, 0.5};
-    ctx.square(p6::TopLeftCorner{ctx.mouse()}, p6::Radius{0.3f},
-               p6::Rotation{rotation});
-    // Green square positioned by Top Right Corner
-    ctx.fill = {0, 1, 0, 0.5};
-    ctx.square(p6::TopRightCorner{ctx.mouse()}, p6::Radius{0.3f},
-               p6::Rotation{rotation});
-    // Blue square positioned by Bottom Left Corner
-    ctx.fill = {0, 0, 1, 0.5};
-    ctx.square(p6::BottomLeftCorner{ctx.mouse()}, p6::Radius{0.3f},
-               p6::Rotation{rotation});
-    // Cyan square positioned by Bottom Right Corner
-    ctx.fill = {0, 1, 1, 0.5};
-    ctx.square(p6::BottomRightCorner{ctx.mouse()}, p6::Radius{0.3f},
-               p6::Rotation{rotation});
+    ctx.background({0.2f, 0.1f, 0.3f});
+    for (float i = -1 + pas; i < 1; i += pas) {
+      for (float j = -1 + pas; j < 1; j += pas) {
+        ctx.square(p6::Center{i, j}, p6::Radius{0.05f}, p6::Rotation{rotation});
+      }
+    };
+    time = ctx.time();
+    rotation = time * 0.1_turn;
+    ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
+
+    ctx.mouse_pressed = [](p6::MouseButton) { std::cout << "Hello World\n"; };
   };
   ctx.start();
 }
