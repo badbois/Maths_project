@@ -2,7 +2,7 @@
 
 ## Description
 
-We are developping a "unique" game like (from Peak) to understand and implement différent types of random.
+We are developping a "unique" game like (from [Peak](https://play.google.com/store/apps/details?id=com.brainbow.peak.app&hl=en&gl=US)) to understand and implement différent types of random.
 <p align="center">
 <img src="https://user-images.githubusercontent.com/44179059/159552882-17df2622-0d4c-4ff2-8cca-e6771e636b28.PNG" width="200">    <img src="https://user-images.githubusercontent.com/44179059/159552903-074e1011-362e-4dbb-870b-cb89697f572d.PNG" width="200">
   </p>
