@@ -41,8 +41,8 @@ int formeProbability() {
   return probaUniform(probas, forme);
 }
 
-void drawobject(auto &ctx, float i, float j, p6::Angle rotation, int forme,
-                int rotationSens) {
+void drawobject(p6::Context &ctx, float i, float j, p6::Angle rotation,
+                int forme, int rotationSens) {
   switch (forme) {
   case 0:
     ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
