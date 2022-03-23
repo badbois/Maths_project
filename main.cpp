@@ -63,7 +63,8 @@ void reinitialize(std::vector<int> &formes, std::vector<int> &sens) {
 
 int main() {
   auto ctx = p6::Context{{720, 720, "My p6 project"}};
-  float pas = 1 / 4.0;
+  int nb_objects_by_line = 6;
+  float pas = 2. / (nb_objects_by_line + 1);
   p6::Angle rotation = 0.011_turn;
   float time = 0;
   std::vector<int> formes(8 * 8);
@@ -73,9 +74,10 @@ int main() {
   ctx.update = [&]() {
     ctx.background({0.2f, 0.1f, 0.3f});
     int k = 0;
-    for (float i = -1 + pas; i < 1; i += pas) {
-      for (float j = -1 + pas; j < 1; j += pas) {
-        drawobject(ctx, i, j, rotation, formes[k], sens[k]);
+    for (int i = 0; i < nb_objects_by_line; i += 1) {
+      for (int j = 0; j < nb_objects_by_line; j += 1) {
+        drawobject(ctx, -1 + (j + 1) * pas, -1 + (i + 1) * pas, rotation,
+                   formes[k], sens[k]);
         k++;
         // ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
         // p6::Rotation{rotation});
