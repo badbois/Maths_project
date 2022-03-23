@@ -6,6 +6,48 @@
 #include "Object.hpp"
 #include "random.hpp"
 
+enum class Color {
+  RED,
+  BLUE,
+  YELLOW,
+};
+
+enum class Rotation {
+  LEFT,
+  RIGHT,
+  NONE,
+};
+
+enum class Size {
+  LITTLE,
+  MEDIUM,
+  LARGE,
+};
+
+enum class Shape {
+  CIRCLE,
+  SQUARE,
+  TRIANGLE,
+};
+
+struct Position2D {
+  int x;
+  int y;
+  Position2D(int PosX, int PosY) : x(PosX), y(PosY) {}
+};
+
+struct Object {
+  Shape shape;
+  Color color;
+  Rotation rotation;
+  Size size;
+  Position2D position;
+  Object(Shape _shape, Color _color, Rotation _rotation, Size _size,
+         Position2D _pos)
+      : shape(_shape), color(_color), rotation(_rotation), size(_size),
+        position(_pos) {}
+};
+
 int probaUniform(std::vector<float> probas, std::vector<int> valeurs) {
   float rand = randomFloat<float>(0.f, 1.f);
   int i = 0;
