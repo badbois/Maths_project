@@ -4,30 +4,37 @@
 #include <vector>
 
 #include "Object.hpp"
-#include "random.hpp"
+#include "Rand.hpp"
+#include "include/random.hpp"
+
+int nb_objects_by_line = 7;
 
 enum class Color {
   RED,
   BLUE,
   YELLOW,
+  count = 3,
 };
 
 enum class Rotation {
+  NONE,
   LEFT,
   RIGHT,
-  NONE,
+  count = 3,
 };
 
 enum class Size {
   LITTLE,
   MEDIUM,
   LARGE,
+  count = 3,
 };
 
 enum class Shape {
   CIRCLE,
   SQUARE,
   TRIANGLE,
+  count = 3,
 };
 
 struct Position2D {
@@ -45,92 +52,70 @@ struct Object {
   Object(Shape _shape, Color _color, Rotation _rotation, Size _size,
          Position2D _pos)
       : shape(_shape), color(_color), rotation(_rotation), size(_size),
-        position(_pos) {}
+        position(_pos){};
+
+  Object()
+      : shape(
+            static_cast<Shape>(randomUniform(static_cast<int>(Shape::count)))),
+        color(
+            static_cast<Color>(randomUniform(static_cast<int>(Color::count)))),
+        rotation(static_cast<Rotation>(
+            randomUniform(static_cast<int>(Rotation::count)))),
+        size(static_cast<Size>(randomUniform(static_cast<int>(Size::count)))),
+        position(Position2D(randomUniform(nb_objects_by_line),
+                            randomUniform(nb_objects_by_line))){};
 };
 
-int probaUniform(std::vector<float> probas, std::vector<int> valeurs) {
-  float rand = randomFloat<float>(0.f, 1.f);
-  int i = 0;
-  float proba = probas[0];
-  while (rand > proba && i < probas.size() - 1) {
-    proba += probas[i + 1];
-    i++;
-  }
-  return valeurs[i];
-}
-
-int sensRotation() {
-  std::vector<float> probas;
-  std::vector<int> rotationSens;
-  probas.push_back(0.3);
-  probas.push_back(0.3);
-  probas.push_back(0.4);
-  rotationSens.push_back(-1);
-  rotationSens.push_back(1);
-  rotationSens.push_back(0);
-  return probaUniform(probas, rotationSens);
-}
-
-int formeProbability() {
-  std::vector<float> probas;
-  std::vector<int> forme;
-  probas.push_back(0.3);
-  probas.push_back(0.3);
-  probas.push_back(0.4);
-  forme.push_back(0);
-  forme.push_back(1);
-  forme.push_back(2);
-  return probaUniform(probas, forme);
-}
-
-void drawobject(p6::Context &ctx, float i, float j, p6::Angle rotation,
-                int forme, int rotationSens) {
-  switch (forme) {
-  case 0:
-    ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
-               p6::Rotation{rotationSens * rotation});
+void drawObject(p6::Context &ctx, Position2D position, p6::Angle rotation,
+                Shape shape, float pas) {
+  switch (shape) {
+  case Shape::SQUARE:
+    ctx.square(p6::Center{-1. + (position.y + 1.) * pas,
+                          -1. + (position.x + 1.) * pas},
+               p6::Radius{0.05f}, p6::Rotation{rotation});
     break;
-  case 1:
-    ctx.circle(p6::Center{i, j}, p6::Radius{0.05f});
+  case Shape::CIRCLE:
+    ctx.circle(p6::Center{-1. + (position.y + 1.) * pas,
+                          -1. + (position.x + 1.) * pas},
+               p6::Radius{0.05f});
     break;
   }
 }
 
-void reinitialize(std::vector<int> &formes, std::vector<int> &sens) {
-  for (int i = 0; i < formes.size(); i++) {
-    formes[i] = formeProbability();
-    sens[i] = sensRotation();
+void drawColor(p6::Context &ctx, Color color) {
+  switch (color) {
+  case Color::RED:
+    ctx.fill = {1., 0., 0.};
+    break;
+  case Color::BLUE:
+    ctx.fill = {0., 0., 1.};
+    break;
+  case Color::YELLOW:
+    ctx.fill = {1., 1., 0.};
+    break;
   }
 }
 
 int main() {
   auto ctx = p6::Context{{720, 720, "My p6 project"}};
-  int nb_objects_by_line = 6;
   float pas = 2. / (nb_objects_by_line + 1);
   p6::Angle rotation = 0.011_turn;
   float time = 0;
-  std::vector<int> formes(8 * 8);
-  std::vector<int> sens(8 * 8);
-  reinitialize(formes, sens);
+  std::vector<Object> objects(20);
   ctx.use_stroke = false;
   ctx.update = [&]() {
     ctx.background({0.2f, 0.1f, 0.3f});
-    int k = 0;
-    for (int i = 0; i < nb_objects_by_line; i += 1) {
-      for (int j = 0; j < nb_objects_by_line; j += 1) {
-        drawobject(ctx, -1 + (j + 1) * pas, -1 + (i + 1) * pas, rotation,
-                   formes[k], sens[k]);
-        k++;
-        // ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
-        // p6::Rotation{rotation});
-      }
-    };
+    for (auto &object : objects) {
+      drawColor(ctx, object.color);
+      drawObject(ctx, object.position, rotation, object.shape, pas);
+    }
     time = ctx.time();
     rotation = time * 0.1_turn;
+    ctx.fill = {1., 1., 1., 0.5};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
 
-    ctx.mouse_pressed = [&formes, &sens](p6::MouseButton) {
-      reinitialize(formes, sens);
+    ctx.mouse_pressed = [](p6::MouseButton) {
+      std::cout << "moussed pressed" << std::endl;
     };
   };
   ctx.start();
