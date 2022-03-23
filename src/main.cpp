@@ -68,16 +68,14 @@ struct Object {
 
 void drawObject(p6::Context &ctx, Position2D position, p6::Angle rotation,
                 Shape shape, float pas) {
+  float i = -1. + (position.y + 1.) * pas;
+  float j = -1. + (position.x + 1.) * pas;
   switch (shape) {
   case Shape::SQUARE:
-    ctx.square(p6::Center{-1. + (position.y + 1.) * pas,
-                          -1. + (position.x + 1.) * pas},
-               p6::Radius{0.05f}, p6::Rotation{rotation});
+    ctx.square(p6::Center{i, j}, p6::Radius{0.05f}, p6::Rotation{rotation});
     break;
   case Shape::CIRCLE:
-    ctx.circle(p6::Center{-1. + (position.y + 1.) * pas,
-                          -1. + (position.x + 1.) * pas},
-               p6::Radius{0.05f});
+    ctx.circle(p6::Center{i, j}, p6::Radius{0.05f});
     break;
   }
 }
