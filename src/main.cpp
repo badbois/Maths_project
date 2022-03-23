@@ -115,7 +115,7 @@ int main() {
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
 
     ctx.mouse_pressed = [](p6::MouseButton) {
-      std::cout << "moussed pressed" << std::endl;
+      std::cout << "time combo " << timeUntilCombo(5.) << std::endl;
     };
   };
   ctx.start();
