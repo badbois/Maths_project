@@ -65,7 +65,7 @@ void reinitialize(std::vector<int> &formes, std::vector<int> &sens) {
 
 int main() {
   auto ctx = p6::Context{{720, 720, "My p6 project"}};
-  int nb_objects_by_line = 6;
+  int nb_objects_by_line = 10;
   float pas = 2. / (nb_objects_by_line + 1);
   p6::Angle rotation = 0.011_turn;
   float time = 0;
@@ -78,8 +78,8 @@ int main() {
     int k = 0;
     for (int i = 0; i < nb_objects_by_line; i += 1) {
       for (int j = 0; j < nb_objects_by_line; j += 1) {
-        drawobject(ctx, -1 + (j + 1) * pas, -1 + (i + 1) * pas, rotation,
-                   formes[k], sens[k]);
+        drawobject(ctx, -1 + (j + 1) * pas, -1 + (i + 1) * pas, rotation, 1,
+                   sens[k]);
         k++;
         // ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
         // p6::Rotation{rotation});
@@ -91,7 +91,6 @@ int main() {
 
     ctx.mouse_pressed = [&formes, &sens](p6::MouseButton) {
       reinitialize(formes, sens);
-      testCmake();
     };
   };
   ctx.start();
