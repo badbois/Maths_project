@@ -1,15 +1,13 @@
 #include <iostream>
 #include <p6/p6.h>
 
-#include <cmath>
 #include <vector>
 
-#include "src/Object.hpp"
-
-float randomUniform() { return (float)rand() / RAND_MAX; }
+#include "Object.hpp"
+#include "random.hpp"
 
 int probaUniform(std::vector<float> probas, std::vector<int> valeurs) {
-  float rand = randomUniform();
+  float rand = randomFloat<float>(0.f, 1.f);
   int i = 0;
   float proba = probas[0];
   while (rand > proba && i < probas.size() - 1) {
@@ -65,7 +63,7 @@ void reinitialize(std::vector<int> &formes, std::vector<int> &sens) {
 
 int main() {
   auto ctx = p6::Context{{720, 720, "My p6 project"}};
-  int nb_objects_by_line = 10;
+  int nb_objects_by_line = 6;
   float pas = 2. / (nb_objects_by_line + 1);
   p6::Angle rotation = 0.011_turn;
   float time = 0;
@@ -78,8 +76,8 @@ int main() {
     int k = 0;
     for (int i = 0; i < nb_objects_by_line; i += 1) {
       for (int j = 0; j < nb_objects_by_line; j += 1) {
-        drawobject(ctx, -1 + (j + 1) * pas, -1 + (i + 1) * pas, rotation, 1,
-                   sens[k]);
+        drawobject(ctx, -1 + (j + 1) * pas, -1 + (i + 1) * pas, rotation,
+                   formes[k], sens[k]);
         k++;
         // ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
         // p6::Rotation{rotation});
