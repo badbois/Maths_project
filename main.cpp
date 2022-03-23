@@ -4,6 +4,8 @@
 #include <cmath>
 #include <vector>
 
+#include "src/Object.hpp"
+
 float randomUniform() { return (float)rand() / RAND_MAX; }
 
 int probaUniform(std::vector<float> probas, std::vector<int> valeurs) {
@@ -89,6 +91,7 @@ int main() {
 
     ctx.mouse_pressed = [&formes, &sens](p6::MouseButton) {
       reinitialize(formes, sens);
+      testCmake();
     };
   };
   ctx.start();
