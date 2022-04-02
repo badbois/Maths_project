@@ -94,27 +94,64 @@ void drawColor(p6::Context &ctx, Color color) {
   }
 }
 
-int main() {
-  auto ctx = p6::Context{{720, 720, "My p6 project"}};
-  float pas = 2. / (nb_objects_by_line + 1);
-  p6::Angle rotation = 0.011_turn;
-  float time = 0;
-  std::vector<Object> objects(20);
-  ctx.use_stroke = false;
-  ctx.update = [&]() {
-    ctx.background({0.2f, 0.1f, 0.3f});
+
+void play_game(p6::Context &ctx, const std::vector<Object> &objects, p6::Angle rotation, float pas, float time, bool &is_playing) {
     for (auto &object : objects) {
       drawColor(ctx, object.color);
       drawObject(ctx, object.position, rotation, object.shape, pas);
     }
     time = ctx.time();
     rotation = time * 0.1_turn;
-    ctx.fill = {1., 1., 1., 0.5};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
 
     ctx.mouse_pressed = [](p6::MouseButton) {
       std::cout << "time combo " << timeUntilCombo(5.) << std::endl;
     };
+}
+
+
+void show_menu(p6::Context &ctx, bool &is_playing) {
+  ctx.key_pressed = [&](p6::Key key) {
+    std::cout << key.logical << std::endl;
+    if(key.logical == "q") {
+      ctx.stop();
+    }
+    else if(key.logical == "p") {
+      is_playing = true;
+    }
   };
-  ctx.start();
+   
+}
+
+
+int main() {
+  try{
+    auto ctx = p6::Context{{720, 720, "My p6 project"}};
+    ctx.set_time_mode_realtime();
+    //Preparation of the game
+    float pas = 2. / (nb_objects_by_line + 1);
+    p6::Angle rotation = 0.011_turn;
+    float time = 0;
+    std::vector<Object> objects(20);
+    ctx.use_stroke = false;
+    bool is_playing = false;
+    
+
+
+    //Main loop
+    ctx.update = [&]() {
+    ctx.background({0.2f, 0.1f, 0.3f});
+    ctx.fill = {1., 1., 1., 0.5};
+    if(is_playing) {
+      play_game(ctx, objects, rotation, pas, time, is_playing);
+    }else{
+      show_menu(ctx, is_playing);
+    } 
+    };
+    ctx.start();
+  }
+  // Log any error that might occur
+    catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 }
