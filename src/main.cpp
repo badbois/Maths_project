@@ -95,7 +95,8 @@ void drawColor(p6::Context &ctx, Color color) {
 }
 
 
-void play_game(p6::Context &ctx, const std::vector<Object> &objects, p6::Angle rotation, float pas, float time, bool &is_playing) {
+void play_game(p6::Context &ctx, const std::vector<Object> &objects, p6::Angle rotation, float pas, float time, bool &is_playing, float game_start_time) {
+  if((game_start_time+10) - ctx.time() > 0.0000001f){
     for (auto &object : objects) {
       drawColor(ctx, object.color);
       drawObject(ctx, object.position, rotation, object.shape, pas);
@@ -107,10 +108,13 @@ void play_game(p6::Context &ctx, const std::vector<Object> &objects, p6::Angle r
     ctx.mouse_pressed = [](p6::MouseButton) {
       std::cout << "time combo " << timeUntilCombo(5.) << std::endl;
     };
+  }else{
+    is_playing = false;
+  }
 }
 
 
-void show_menu(p6::Context &ctx, bool &is_playing) {
+void show_menu(p6::Context &ctx, bool &is_playing, float &game_start_time) {
   ctx.key_pressed = [&](p6::Key key) {
     std::cout << key.logical << std::endl;
     if(key.logical == "q") {
@@ -118,6 +122,7 @@ void show_menu(p6::Context &ctx, bool &is_playing) {
     }
     else if(key.logical == "p") {
       is_playing = true;
+      game_start_time = ctx.time();
     }
   };
    
@@ -132,6 +137,7 @@ int main() {
     float pas = 2. / (nb_objects_by_line + 1);
     p6::Angle rotation = 0.011_turn;
     float time = 0;
+    float game_start_time = 0;
     std::vector<Object> objects(20);
     ctx.use_stroke = false;
     bool is_playing = false;
@@ -143,9 +149,9 @@ int main() {
     ctx.background({0.2f, 0.1f, 0.3f});
     ctx.fill = {1., 1., 1., 0.5};
     if(is_playing) {
-      play_game(ctx, objects, rotation, pas, time, is_playing);
+      play_game(ctx, objects, rotation, pas, time, is_playing, game_start_time);
     }else{
-      show_menu(ctx, is_playing);
+      show_menu(ctx, is_playing, game_start_time);
     } 
     };
     ctx.start();
