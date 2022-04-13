@@ -13,28 +13,28 @@ enum class Color {
   RED,
   BLUE,
   YELLOW,
-  count = 3,
+  count,
 };
 
 enum class Rotation {
   NONE,
   LEFT,
   RIGHT,
-  count = 3,
+  count,
 };
 
 enum class Size {
   LITTLE,
   MEDIUM,
   LARGE,
-  count = 3,
+  count,
 };
 
 enum class Shape {
   CIRCLE,
   SQUARE,
   TRIANGLE,
-  count = 3,
+  count,
 };
 
 struct Position2D {
@@ -116,6 +116,7 @@ void play_game(p6::Context &ctx, const std::vector<Object> &objects,
 }
 
 void show_menu(p6::Context &ctx, bool &is_playing, float &game_start_time) {
+  ctx.text(u"Prout le pet", p6::Center{0.f, 0.f});
   ctx.key_pressed = [&](p6::Key key) {
     std::cout << key.logical << std::endl;
     if (key.logical == "q") {
@@ -130,7 +131,7 @@ void show_menu(p6::Context &ctx, bool &is_playing, float &game_start_time) {
 int main() {
   try {
     auto ctx = p6::Context{{720, 720, "My p6 project"}};
-    ctx.set_time_mode_realtime();
+    ctx.time_perceived_as_realtime();
     // Preparation of the game
     float pas = 2. / (nb_objects_by_line + 1);
     p6::Angle rotation = 0.011_turn;
