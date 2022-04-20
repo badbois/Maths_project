@@ -39,42 +39,45 @@ void create_objects() {
 };
 
 void set_game_grid() {
-
   create_objects();
-
   std::vector<Position2D> positions = create_positions(objects, 7);
-
   set_all_positions(objects, positions);
 }
 
 Position2D from_position_to_case(glm::vec2 position) {
   Position2D case_position;
-  case_position.x = (position.x + 1) / pas - 1;
-  case_position.y = (position.y + 1) / pas - 1;
+  case_position.x = (position.y + 1) / pas - 1 + pas / 2;
+  case_position.y = (position.x + 1) / pas - 1 + pas / 2;
   return case_position;
 }
 
 void on_click(glm::vec2 mouse_position) {
-  std::cout << "pos : " << from_position_to_case(mouse_position).x << ", "
-            << from_position_to_case(mouse_position).y << std::endl;
   if (from_position_to_case(mouse_position) == objects[0].get_position()) {
-    std::cout << "OUI" << std::endl;
-  }
-  // set_game_grid();
+    if (game_state.click_time < time_until_combo(1.)) {
+      std::cout << "le tps : " << game_state.click_time << std::endl;
+      game_state.combo++;
+    }
+    game_state.score += game_state.combo * 10;
+    if (game_state.combo < 7) {
+      game_state.combo++;
+    };
+  } else {
+    game_state.combo = 1;
+  };
+  std::cout << "combot : " << game_state.combo << std::endl;
+  std::cout << "Le score vaut : " << game_state.score << std::endl;
+  set_game_grid();
+  game_state.click_time = 0;
 }
-
-void initialize_game() { set_game_grid(); }
 
 void play_game(p6::Context &ctx, bool &is_playing, float game_start_time) {
   if ((game_start_time + 10) - ctx.time() > 0.0000001f) {
     draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
     ctx.fill = {1., 1., 1., 0.8};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
+    game_state.click_time += 0.01;
 
-    ctx.mouse_pressed = [&ctx](p6::MouseButton) {
-      on_click(ctx.mouse());
-      std::cout << "time combo " << time_until_combo(5.) << std::endl;
-    };
+    ctx.mouse_pressed = [&ctx](p6::MouseButton) { on_click(ctx.mouse()); };
   } else {
     is_playing = false;
   }

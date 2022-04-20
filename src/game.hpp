@@ -5,8 +5,9 @@ struct GameState {
   int combo;
   float click_time;
   int score;
+  GameState() : combo(1), click_time(0), score(0) {}
 };
 
-void initialize_game();
+void set_game_grid();
 
 void play_game(p6::Context &ctx, bool &is_playing, float game_start_time);

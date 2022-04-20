@@ -60,6 +60,11 @@ public:
 
   // Redefinition operator ==
   bool operator==(const Object &other) {
+    if (shape == Shape::CIRCLE) {
+      return ((shape == other.get_shape()) &&
+              (compare_colors(color, other.get_color())) &&
+              (position == other.get_position()));
+    }
     return ((shape == other.get_shape()) &&
             (compare_colors(color, other.get_color())) &&
             (rotating_direction == other.get_rotating_direction()) &&
