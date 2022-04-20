@@ -14,7 +14,7 @@ void draw_object(p6::Context &ctx, const Object &object,
     ctx.circle(p6::Center{i, j}, p6::Radius{0.05f});
     break;
   case Shape::TRIANGLE:
-    ctx.triangle({i+0.05f, j-0.05f}, {i-0.05f, j-0.05f}, {i, j+0.05f});
+    ctx.triangle({i + 0.05f, j - 0.05f}, {i - 0.05f, j - 0.05f}, {i, j + 0.05f});
     break;
   }
 }
