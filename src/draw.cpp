@@ -1,7 +1,7 @@
 #include "draw.hpp"
 
-void draw_object(p6::Context &ctx, const Object &object, const p6::Angle rotation,
-                 float pas) {
+void draw_object(p6::Context &ctx, const Object &object,
+                 const p6::Angle rotation, float pas) {
   float i = -1. + (object.get_position().y + 1.) * pas;
   float j = -1. + (object.get_position().x + 1.) * pas;
   ctx.fill = object.get_color();
@@ -12,6 +12,9 @@ void draw_object(p6::Context &ctx, const Object &object, const p6::Angle rotatio
     break;
   case Shape::CIRCLE:
     ctx.circle(p6::Center{i, j}, p6::Radius{0.05f});
+    break;
+  case Shape::TRIANGLE:
+    ctx.triangle({i+0.05f, j-0.05f}, {i-0.05f, j-0.05f}, {i, j+0.05f});
     break;
   }
 }

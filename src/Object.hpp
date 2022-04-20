@@ -22,7 +22,7 @@ enum class Size {
 enum class Shape {
   CIRCLE,
   SQUARE,
- //TRIANGLE,
+  TRIANGLE,
   count,
 };
 
