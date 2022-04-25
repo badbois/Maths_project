@@ -1,6 +1,6 @@
 #pragma once
 
-void set_random_parameters(int difficulty);
+void set_difficulty(const int difficulty_gamer);
 int random_uniform(const int nb_values);
 float time_until_combo(const float average_comboTime);
 int random_rotation_direction();

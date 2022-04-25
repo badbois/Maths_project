@@ -5,7 +5,7 @@
 #include "rand.hpp"
 
 int nb_objects_by_line = 7;
-int nb_first_objects = 5;
+int nb_first_objects = 8;
 float pas = 2. / (nb_objects_by_line + 1);
 std::vector<p6::Color> colors = {{1., 0., 0.},   {0., 1., 0.}, {0., 0., 1.},
                                  {1., 1., 0.},   {1., 0., 1.}, {0., 1., 1.},
@@ -34,7 +34,7 @@ void create_objects() {
   objects.push_back(unique_object);
   adding_different_objects(different_objects);
   for (int i = 1; i < different_objects.size(); i++) {
-    for (int j = 2; j < 4; j++) {
+    for (int j = 2; j < 5; j++) {
       objects.push_back(different_objects[i]);
     }
   }
@@ -74,14 +74,15 @@ void on_click(glm::vec2 mouse_position) {
 }
 
 void play_game(p6::Context &ctx, bool &is_playing, float game_start_time) {
-  if ((game_start_time + 10) - ctx.time() > 0.0000001f) {
+  set_difficulty(1);
+ // if ((game_start_time + 10) - ctx.time() > 0.0000001f) {
     draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
     ctx.fill = {1., 1., 1., 0.8};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
     game_state.click_time += 0.01;
 
     ctx.mouse_pressed = [&ctx](p6::MouseButton) { on_click(ctx.mouse()); };
-  } else {
-    is_playing = false;
-  }
+  // } else {
+  //   is_playing = false;
+  // }
 }
