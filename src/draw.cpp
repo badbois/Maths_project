@@ -21,7 +21,9 @@ void draw_object(p6::Context &ctx, const Object &object,
 
 void draw_grid_of_objects(p6::Context &ctx, const std::vector<Object> &objects,
                           const p6::Angle rotation, float pas) {
+                            int i=0;
   for (auto &object : objects) {
     draw_object(ctx, object, rotation, pas);
+    i++;
   }
 }

@@ -15,8 +15,10 @@ std::vector<Object> objects;
 GameState game_state;
 
 void adding_different_objects(std::vector<Object> &different_objects) {
+  int unique_color = different_objects[0].get_color_index();
   for (int i = 0; i < nb_first_objects; i++) {
     Object tmp(colors, nb_objects_by_line);
+    tmp.set_color_difficult(unique_color, colors);
     if (std::find(different_objects.begin(), different_objects.end(), tmp) ==
         different_objects.end()) {
       different_objects.push_back(tmp);

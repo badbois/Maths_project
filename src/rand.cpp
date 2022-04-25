@@ -8,17 +8,34 @@
 float p = 0.5f;
 float alpha = 0.5f;
 float shape_markov = 0.3f;
-
-void set_random_parameters(int difficulty) {
+int color_difficulty = 0;
+void set_random_parameters(const int difficulty) {
   if (difficulty == 1) {
     // jsp si c'est + ou - dur si tu tournes ou pas, à voir
     p = 0.1f;
     alpha = 0.5f;
     shape_markov = 0.1f;
+    color_difficulty=1;
   }
 }
 
-int from_random_to_value(const int nb_values, const float rand) {
+int random_color(const int nb_of_colors, const int unique_color){
+  float rand = random_float(0.f,1.f);
+  float difficulty = 1.f/nb_of_colors;
+  if(color_difficulty==1){
+    difficulty=0.5;
+  }
+  int color=unique_color;
+  if(rand>difficulty){
+    while(color==unique_color){
+      color = random_uniform(nb_of_colors);
+    }
+  }
+  return color;
+}
+
+int random_uniform(const int nb_values) {
+  float rand = random_float(0.f, 1.f);
   int i = 0;
   while (rand > static_cast<float>(i + 1) / nb_values && i < nb_values) {
     i++;
@@ -26,22 +43,18 @@ int from_random_to_value(const int nb_values, const float rand) {
   return i;
 }
 
-int random_uniform(const int nb_values) {
-  float rand = random_float(0.f, 1.f);
-  return from_random_to_value(nb_values, rand);
-}
-
-int bernoulli(float p) {
+int bernoulli(const float p) {
   float rand = random_float(0.f, 1.f);
   return rand < p ? 1 : 0;
 }
 
-int rademacher(float alpha) {
+int rademacher(const float alpha) {
   float rand = random_float(0.f, 1.f);
   return rand < alpha ? 1 : -1;
 }
 
-int markov(int latest_shape) {
+//for unique object
+int markov(const int latest_shape) {
   float rand = random_float(0.f, 1.f);
   if (rand < shape_markov) {
     return latest_shape;
@@ -55,9 +68,12 @@ int markov(int latest_shape) {
   }
 }
 
-/*pourrait peut être être utile pour les combos, si après plusieurs bons coups
-on trouve dans un tps inférieur à ce tps, alors meilleur combo. A utiliser si
-vrm le prof veut une loi exponentielle*/
+//for other objects
+int random_shape(const int nb_of_shapes) {
+  return random_uniform(nb_of_shapes);
+}
+
+//for combos
 float time_until_combo(const float average_combo_time) {
   float rand = random_float(0.f, 1.f);
   return -average_combo_time * log(1 - rand);
@@ -68,17 +84,6 @@ int random_rotation_direction() {
   return rand == 0 ? 0 : rademacher(alpha);
 }
 
-int random_shape(const int nb_of_shapes) {
-  float rand = random_float(0.f, 1.f);
-  return random_uniform(nb_of_shapes, rand);
-}
-
-int random_color(const int nb_of_colors) {
-  float rand = random_float(0.f, 1.f);
-  return from_random_to_value(nb_of_colors, rand);
-}
-
 int random_position(const int nb_of_objects_by_line) {
-  float rand = random_float(0.f, 1.f);
-  return from_random_to_value(nb_of_objects_by_line, rand);
+  return random_uniform(nb_of_objects_by_line);
 }

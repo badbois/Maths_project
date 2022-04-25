@@ -32,7 +32,7 @@ struct Position2D {
   }
 };
 
-bool compare_colors(const p6::Color &color1, const p6::Color &color2);
+// bool compare_colors(const p6::Color &color1, const p6::Color &color2);
 
 class Object {
 private:
@@ -40,6 +40,7 @@ private:
   p6::Color color;
   Rotating_direction rotating_direction;
   Position2D position;
+  int color_index;
 
 public:
   // Default constructor
@@ -51,18 +52,22 @@ public:
   explicit Object(const std::vector<p6::Color> &colors,
                   const int nb_objects_by_line)
       : shape(static_cast<Shape>(random_shape(static_cast<int>(Shape::count)))),
-        color(colors[random_color(colors.size())]),
+        color_index(random_color(colors.size())),
         rotating_direction(random_rotation_direction()),
-        position(Position2D(0, 0)) {}
+        position(Position2D(0, 0)) {
+          color = colors[color_index];
+        }
 
   // Constructor for the unique object, for Markov chains he keeps the lastest
   // shape in mind
   explicit Object(const std::vector<p6::Color> &colors,
                   const int nb_objects_by_line, int latest_shape)
       : shape(static_cast<Shape>(markov(latest_shape))),
-        color(colors[random_color(colors.size())]),
+        color_index(random_color(colors.size())),
         rotating_direction(random_rotation_direction()),
-        position(Position2D(0, 0)) {}
+        position(Position2D(0, 0)) {
+          color = colors[color_index];
+        }
 
   // Copy constructor
   Object(const Object &obj) = default;
@@ -71,11 +76,11 @@ public:
   bool operator==(const Object &other) {
     if (shape == Shape::CIRCLE) {
       return ((shape == other.get_shape()) &&
-              (compare_colors(color, other.get_color())) &&
+              (color_index == other.get_color_index()) &&
               (position == other.get_position()));
     }
     return ((shape == other.get_shape()) &&
-            (compare_colors(color, other.get_color())) &&
+            (color_index == other.get_color_index()) &&
             (rotating_direction == other.get_rotating_direction()) &&
             (position == other.get_position()));
   }
@@ -83,10 +88,18 @@ public:
   // Setters
   void set_position(const Position2D &pos) { position = pos; }
 
+  void set_color_difficult(const int unique_color,
+                           const std::vector<p6::Color> &colors) {
+    color_index = random_color(colors.size(), unique_color);
+    color = colors[color_index];
+  }
+
   // Getters
   Shape get_shape() const { return shape; }
 
   p6::Color get_color() const { return color; }
+
+  int get_color_index() const { return color_index; }
 
   int get_rotating_direction() const { return rotating_direction.direction; }
 
