@@ -5,7 +5,8 @@ struct GameState {
   int combo;
   float click_time;
   int score;
-  GameState() : combo(1), click_time(0), score(0) {}
+  int latest_shape;
+  GameState() : combo(1), click_time(0), score(0), latest_shape(0) {}
 };
 
 void set_game_grid();

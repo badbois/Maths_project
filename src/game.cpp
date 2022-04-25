@@ -26,7 +26,7 @@ void adding_different_objects(std::vector<Object> &different_objects) {
 
 void create_objects() {
   std::vector<Object> different_objects;
-  Object unique_object(colors, nb_objects_by_line);
+  Object unique_object(colors, nb_objects_by_line, game_state.latest_shape);
   different_objects.push_back(unique_object);
   objects.clear();
   objects.push_back(unique_object);
@@ -67,6 +67,7 @@ void on_click(glm::vec2 mouse_position) {
   std::cout << "combot : " << game_state.combo << std::endl;
   std::cout << "Le score vaut : " << game_state.score << std::endl;
   set_game_grid();
+  game_state.latest_shape = static_cast<int>(objects[0].get_shape());
   game_state.click_time = 0;
 }
 

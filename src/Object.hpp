@@ -55,6 +55,15 @@ public:
         rotating_direction(random_rotation_direction()),
         position(Position2D(0, 0)) {}
 
+  // Constructor for the unique object, for Markov chains he keeps the lastest
+  // shape in mind
+  explicit Object(const std::vector<p6::Color> &colors,
+                  const int nb_objects_by_line, int latest_shape)
+      : shape(static_cast<Shape>(markov(latest_shape))),
+        color(colors[random_color(colors.size())]),
+        rotating_direction(random_rotation_direction()),
+        position(Position2D(0, 0)) {}
+
   // Copy constructor
   Object(const Object &obj) = default;
 
