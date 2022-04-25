@@ -7,7 +7,7 @@
 
 float p = 0.5f;
 float alpha = 0.5f;
-float shape_markov = 0.01f;
+float shape_markov = 0.3f;
 
 void set_random_parameters(int difficulty) {
   if (difficulty == 1) {
@@ -70,7 +70,7 @@ int random_rotation_direction() {
 
 int random_shape(const int nb_of_shapes) {
   float rand = random_float(0.f, 1.f);
-  return from_random_to_value(nb_of_shapes, rand);
+  return random_uniform(nb_of_shapes, rand);
 }
 
 int random_color(const int nb_of_colors) {
