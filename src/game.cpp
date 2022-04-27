@@ -3,6 +3,8 @@
 #include "draw.hpp"
 #include "game.hpp"
 #include "rand.hpp"
+#include <string>
+#include "score.hpp"
 
 int nb_objects_by_line = 7;
 int nb_first_objects = 8;
@@ -75,14 +77,30 @@ void on_click(glm::vec2 mouse_position) {
 
 void play_game(p6::Context &ctx, bool &is_playing, float game_start_time) {
   set_difficulty(1);
- // if ((game_start_time + 10) - ctx.time() > 0.0000001f) {
+  if ((game_start_time + 10) - ctx.time() > 0.0000001f) {
     draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
     ctx.fill = {1., 1., 1., 0.8};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
     game_state.click_time += 0.01;
+    ctx.fill = {1., 1., 1., 1};
+    ctx.text_size = 0.02f;
+
+
+    //convert int to u16string
+    std::string score_string = std::to_string(game_state.score);
+    std::u16string score_u16string = std::u16string(score_string.begin(),
+                                                    score_string.end());
+
+    std::string combo_string = std::to_string(game_state.combo);
+    std::u16string combo_u16string = std::u16string(combo_string.begin(),
+                                                    combo_string.end());                                                
+
+
+    ctx.text(u"score:"+ score_u16string + u"  combo:x"+combo_u16string, p6::Center{0.f, 0.9f});
 
     ctx.mouse_pressed = [&ctx](p6::MouseButton) { on_click(ctx.mouse()); };
-  // } else {
-  //   is_playing = false;
-  // }
+   } else {
+      add_new_score(game_state.score);
+      is_playing = false;
+   }
 }
