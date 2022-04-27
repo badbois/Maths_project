@@ -6,8 +6,10 @@
 #include "Object.hpp"
 #include "draw.hpp"
 #include "game.hpp"
+#include "score.hpp"
 
 void show_menu(p6::Context &ctx, bool &is_playing, float &game_start_time) {
+  ctx.text_size= 0.05f;
   ctx.text(u"Prout le pet", p6::Center{0.f, 0.f});
   ctx.key_pressed = [&](p6::Key key) {
     std::cout << key.logical << std::endl;
@@ -16,6 +18,13 @@ void show_menu(p6::Context &ctx, bool &is_playing, float &game_start_time) {
     } else if (key.logical == "p") {
       is_playing = true;
       game_start_time = ctx.time();
+    }else if (key.logical == "s") {
+      //affiche le score dans la console, pour le moment
+      std::vector<int> scoreboard;
+      get_scoreboard(scoreboard);
+      for(int i = 0; i < scoreboard.size(); i++) {
+        std::cout << scoreboard[i] << std::endl;
+      }
     }
   };
 }
