@@ -1,4 +1,5 @@
 #include "draw.hpp"
+#include <math.h>
 
 void draw_object(p6::Context &ctx, const Object &object,
                  const p6::Angle rotation, float pas) {
@@ -14,14 +15,23 @@ void draw_object(p6::Context &ctx, const Object &object,
     ctx.circle(p6::Center{i, j}, p6::Radius{0.05f});
     break;
   case Shape::TRIANGLE:
-    ctx.triangle({i + 0.05f, j - 0.05f}, {i - 0.05f, j - 0.05f}, {i, j + 0.05f});
+    float cosinus =
+        cos(object.get_rotating_direction() * rotation.as_radians());
+    float sinus = sin(object.get_rotating_direction() * rotation.as_radians());
+
+    ctx.triangle({cosinus * 0.05f - sinus * (-0.05f) + i,
+                  sinus * 0.05f + cosinus * (-0.05f) + j},
+                 {cosinus * (-0.05f) - sinus * (-0.05f) + i,
+                  sinus * (-0.05f) + cosinus * (-0.05f) + j},
+                 {-sinus * 0.05f + i, +cosinus * 0.05f + j});
+
     break;
   }
 }
 
 void draw_grid_of_objects(p6::Context &ctx, const std::vector<Object> &objects,
                           const p6::Angle rotation, float pas) {
-                            int i=0;
+  int i = 0;
   for (auto &object : objects) {
     draw_object(ctx, object, rotation, pas);
     i++;
