@@ -7,7 +7,7 @@
 #include <math.h>
 
 float p = 0.5f;
-float alpha = 0.5f;
+float alpha = 0.9f;
 float shape_markov = 0.5f;
 int difficulty = 0;
 float sigma = 5.f;
@@ -15,7 +15,7 @@ float sigma = 5.f;
 void set_difficulty(const int difficulty_gamer) {
   if (difficulty_gamer == 1) {
     // jsp si c'est + ou - dur si tu tournes ou pas, à voir
-    p = 0.1f;
+    p = 0.9f;
     alpha = 0.5f;
     shape_markov = 0.1f;
     difficulty = 1;
