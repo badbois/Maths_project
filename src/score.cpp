@@ -4,7 +4,7 @@
 void get_scoreboard(std::vector<int>& scoreboard) {
     std::ifstream file;
     try{
-        file.open("./assets/scoreboard.txt", std::ios::in);
+        file.open("../assets/scoreboard.txt", std::ios::in);
         int score;
         while(file >> score){
             scoreboard.push_back(score);
@@ -54,7 +54,7 @@ void add_new_score(const int score){
 
     std::ofstream file;
     try{
-        file.open("./assets/scoreboard.txt", std::ios::out);
+        file.open("../assets/scoreboard.txt", std::ios::out);
         for(int i=0; i<3; i++){
             file << scoreboard[i] << std::endl;
         }
