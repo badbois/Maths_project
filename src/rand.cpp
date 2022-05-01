@@ -38,6 +38,10 @@ int random_color(const int nb_of_colors, const int unique_color) {
   return color;
 }
 
+int random_color(const int nb_of_colors) {
+  return random_uniform(nb_of_colors);
+}
+
 int random_uniform(const int nb_values) {
   float rand = random_float(0.f, 1.f);
   int i = 0;
