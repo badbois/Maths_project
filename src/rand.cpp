@@ -2,31 +2,92 @@
 
 #include "rand.hpp"
 #include "include/random.hpp"
+#include "stats.hpp"
 #include <cmath>
 #include <iostream>
 #include <math.h>
 
-float p = 0.5f;
-float alpha = 0.9f;
-float shape_markov = 0.5f;
-int difficulty = 0;
-float sigma = 5.f;
+struct RandomParameters {
+  float p = 0.5f;
+  float alpha = 0.9f;
+  float shape_markov = 0.5f;
+  int difficulty = 0;
+  float sigma = 5.f;
+};
+
+Statistics stats;
+RandomParameters parameters;
 
 void set_difficulty(const int difficulty_gamer) {
   if (difficulty_gamer == 1) {
     // jsp si c'est + ou - dur si tu tournes ou pas, à voir
-    p = 0.9f;
-    alpha = 0.5f;
-    shape_markov = 0.1f;
-    difficulty = 1;
-    sigma = 0.2f;
+    parameters.p = 0.9f;
+    parameters.alpha = 0.5f;
+    parameters.shape_markov = 0.1f;
+    parameters.difficulty = 1;
+    parameters.sigma = 0.2f;
+  } else {
+    parameters.p = 0.5f;
+    parameters.alpha = 0.9f;
+    parameters.shape_markov = 0.5f;
+    parameters.difficulty = 0;
+    parameters.sigma = 5.f;
   }
+}
+
+void reload() {
+  for (int i = 0; i < stats.positions.size(); i++) {
+    stats.positions[i] = 0;
+  }
+  stats.bernoulli = 0;
+  stats.rademacher = 0;
+  stats.nb_objects = 0;
+  stats.rounds = 0;
+}
+
+void add_positions_stats(int value){
+  stats.positions[value]++;
+}
+
+void add_rotation_stats(int rotation){
+  if(rotation==1){
+    stats.bernoulli++;
+    stats.rademacher++;
+  }
+  if(rotation==-1){
+    stats.bernoulli++;
+  }
+}
+
+void update_stats(int posx, int posy, int rotation){
+  add_positions_stats(posx);
+  add_positions_stats(posy);
+  add_rotation_stats(rotation);
+  stats.nb_objects++;
+}
+
+void add_round_stats(){
+  stats.rounds++;
+}
+
+void display_statistics() {
+  statistic(stats, parameters.p, parameters.alpha, parameters.difficulty);
+  reload();
+};
+
+int random_uniform(const int nb_values) {
+  float rand = random_float(0.f, 1.f);
+  int i = 0;
+  while (rand > static_cast<float>(i + 1) / nb_values && i < nb_values) {
+    i++;
+  }
+  return i;
 }
 
 int random_color(const int nb_of_colors, const int unique_color) {
   float rand = random_float(0.f, 1.f);
   float color_difficulty = 1.f / nb_of_colors;
-  if (difficulty == 1) {
+  if (parameters.difficulty == 1) {
     color_difficulty = 0.8;
   }
   int color = unique_color;
@@ -42,15 +103,6 @@ int random_color(const int nb_of_colors) {
   return random_uniform(nb_of_colors);
 }
 
-int random_uniform(const int nb_values) {
-  float rand = random_float(0.f, 1.f);
-  int i = 0;
-  while (rand > static_cast<float>(i + 1) / nb_values && i < nb_values) {
-    i++;
-  }
-  return i;
-}
-
 int bernoulli(const float p) {
   float rand = random_float(0.f, 1.f);
   return rand < p ? 1 : 0;
@@ -64,7 +116,7 @@ int rademacher(const float alpha) {
 // for unique object
 int markov(const int latest_shape) {
   float rand = random_float(0.f, 1.f);
-  if (rand < shape_markov) {
+  if (rand < parameters.shape_markov) {
     return latest_shape;
   }
   if (latest_shape == 0) {
@@ -88,8 +140,8 @@ float time_until_combo(const float average_combo_time) {
 }
 
 int random_rotation_direction() {
-  int rand = bernoulli(p);
-  return rand == 0 ? 0 : rademacher(alpha);
+  int rand = bernoulli(parameters.p);
+  return rand == 0 ? 0 : rademacher(parameters.alpha);
 }
 
 void set_gaussian_probabilities(std::vector<float> &probabilities) {
@@ -116,7 +168,7 @@ int from_random_to_value(std::vector<float> probabilities) {
 }
 
 int random_position(const int nb_of_objects_by_line) {
-  if (difficulty == 1) {
+  if (parameters.difficulty == 1) {
     return random_uniform(7);
   } else {
     std::vector<float> probabilities(7);

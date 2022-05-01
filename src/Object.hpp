@@ -111,6 +111,7 @@ inline void set_all_positions(std::vector<Object> &objects,
                               std::vector<Position2D> &positions) {
   for (int i = 0; i < objects.size(); i++) {
     objects[i].set_position(positions[i]);
+    update_stats(objects[i].get_position().x, objects[i].get_position().y, objects[i].get_rotating_direction());
   }
 }
 
