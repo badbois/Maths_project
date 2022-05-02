@@ -121,7 +121,7 @@ void show_score_and_combo(p6::Context &ctx, int score, int combo) {
 
 void play_game(p6::Context &ctx, bool &is_playing, float game_start_time) {
   set_difficulty(0);
-  if ((game_start_time + 60) - ctx.time() > 0.0000001f) {
+  if ((game_start_time + 10) - ctx.time() > 0.0000001f) {
     draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
     ctx.fill = {1., 1., 1., 0.8};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});

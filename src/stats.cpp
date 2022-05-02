@@ -46,6 +46,9 @@ void display_exp(std::vector<float> exp, float lambda){
 
 void display_uniform_position(std::vector<int> positions, int nb_objects, int rounds, int difficulty, std::vector<float> gaussian_probabilities) {
   int nb_positions = positions.size();
+  int nb_positions_attributed = 0;
+  float mean = 0;
+  float standard_deviation = 0;
   std::cout << "Diagramme des positions (x et y confondus) :" << std::endl;
   for (int i = 0; i < nb_positions; i++) {
     draw_line(
@@ -57,12 +60,30 @@ void display_uniform_position(std::vector<int> positions, int nb_objects, int ro
   if (difficulty == 1) {
     for (int i = 0; i < nb_positions; i++) {
       draw_line(i, 2*nb_objects/(nb_positions*(rounds+1)));
+      mean+=i*positions[i];
+      nb_positions_attributed+=positions[i];
     }
+    mean/=nb_positions_attributed;
+    for(int i = 0; i<nb_positions ; i++){ 
+      standard_deviation+=positions[i] * (i-mean)*(i-mean);
+    }
+    standard_deviation=sqrt(standard_deviation/nb_positions_attributed);
+    std::cout << std::endl << "Et la moyenne vaut : " << mean << " (théoriquement "<< 3 << ")" << std::endl;
+    std::cout << "Et l'écart type vaut : " << standard_deviation << " (théoriquement "<< sqrt(6*6/12.) << ")" << std::endl;
   } else {
     // gaussian should be here... have to change
     for (int i = 0; i < nb_positions; i++) {
-      draw_line(i, gaussian_probabilities[i]*50);
+      draw_line(i, gaussian_probabilities[i]*45);
+      mean+=i*positions[i];
+      nb_positions_attributed+=positions[i];
     }
+    mean/=nb_positions_attributed;
+    for(int i = 0; i<nb_positions ; i++){ 
+      standard_deviation+=positions[i] * (i-mean)*(i-mean);
+    }
+    standard_deviation=sqrt(standard_deviation/nb_positions_attributed);
+    std::cout << std::endl << "Et la moyenne vaut : " << mean << " (théoriquement "<< 2.5 << ")" << std::endl;
+    std::cout << "Et l'écart type vaut : " << standard_deviation << " (théoriquement "<< 1.5 << ")" << std::endl;
   }
   std::cout << std::endl;
 }

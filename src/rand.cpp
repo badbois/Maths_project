@@ -25,13 +25,13 @@ RandomParameters parameters;
 void set_gaussian_probabilities() {
   // on va essayer d'automatiser plus tard mais jsp si on la droit d'utiliser la
   // loi gaussienne juste pour calculer les proba.. je demanderai au prof
-  parameters.gaussian_probabilities[0] = 0.05;
-  parameters.gaussian_probabilities[1] = 0.11;
-  parameters.gaussian_probabilities[2] = 0.21;
-  parameters.gaussian_probabilities[3] = 0.26;
-  parameters.gaussian_probabilities[4] = 0.21;
-  parameters.gaussian_probabilities[5] = 0.11;
-  parameters.gaussian_probabilities[6] = 0.05;
+  parameters.gaussian_probabilities[0] = 0.04775;
+  parameters.gaussian_probabilities[1] = 0.1109;
+  parameters.gaussian_probabilities[2] = 0.2108;
+  parameters.gaussian_probabilities[3] = 0.2611;
+  parameters.gaussian_probabilities[4] = 0.2108;
+  parameters.gaussian_probabilities[5] = 0.1109;
+  parameters.gaussian_probabilities[6] = 0.04775;
 }
 
 void set_difficulty(const int difficulty_gamer) {
