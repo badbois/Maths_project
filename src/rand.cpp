@@ -13,10 +13,26 @@ struct RandomParameters {
   float shape_markov = 0.5f;
   int difficulty = 0;
   float sigma = 5.f;
+  float lambda = 1.f;
+  std::vector<float> gaussian_probabilities;
+
+  RandomParameters() : gaussian_probabilities(7){};
 };
 
 Statistics stats;
 RandomParameters parameters;
+
+void set_gaussian_probabilities() {
+  // on va essayer d'automatiser plus tard mais jsp si on la droit d'utiliser la
+  // loi gaussienne juste pour calculer les proba.. je demanderai au prof
+  parameters.gaussian_probabilities[0] = 0.05;
+  parameters.gaussian_probabilities[1] = 0.11;
+  parameters.gaussian_probabilities[2] = 0.21;
+  parameters.gaussian_probabilities[3] = 0.26;
+  parameters.gaussian_probabilities[4] = 0.21;
+  parameters.gaussian_probabilities[5] = 0.11;
+  parameters.gaussian_probabilities[6] = 0.05;
+}
 
 void set_difficulty(const int difficulty_gamer) {
   if (difficulty_gamer == 1) {
@@ -26,12 +42,14 @@ void set_difficulty(const int difficulty_gamer) {
     parameters.shape_markov = 0.1f;
     parameters.difficulty = 1;
     parameters.sigma = 0.2f;
+    parameters.lambda = 0.5;
   } else {
     parameters.p = 0.5f;
     parameters.alpha = 0.9f;
     parameters.shape_markov = 0.5f;
     parameters.difficulty = 0;
     parameters.sigma = 5.f;
+    parameters.lambda = 1.f;
   }
 }
 
@@ -43,6 +61,7 @@ void reload() {
   stats.rademacher = 0;
   stats.nb_objects = 0;
   stats.rounds = 0;
+  stats.exp.clear();
 }
 
 void add_positions_stats(int value){
@@ -71,7 +90,7 @@ void add_round_stats(){
 }
 
 void display_statistics() {
-  statistic(stats, parameters.p, parameters.alpha, parameters.difficulty);
+  statistic(stats, parameters.p, parameters.alpha, parameters.lambda, parameters.difficulty, parameters.gaussian_probabilities);
   reload();
 };
 
@@ -134,26 +153,16 @@ int random_shape(const int nb_of_shapes) {
 }
 
 // for combos
-float time_until_combo(const float average_combo_time) {
+float time_until_combo() {
   float rand = random_float(0.f, 1.f);
-  return -average_combo_time * log(1 - rand);
+  rand = -parameters.lambda * log(1 - rand);
+  stats.exp.push_back(rand);
+  return rand;
 }
 
 int random_rotation_direction() {
   int rand = bernoulli(parameters.p);
   return rand == 0 ? 0 : rademacher(parameters.alpha);
-}
-
-void set_gaussian_probabilities(std::vector<float> &probabilities) {
-  // on va essayer d'automatiser plus tard mais jsp si on la droit d'utiliser la
-  // loi gaussienne juste pour calculer les proba.. je demanderai au prof
-  probabilities[0] = 0.05;
-  probabilities[1] = 0.11;
-  probabilities[2] = 0.21;
-  probabilities[3] = 0.26;
-  probabilities[4] = 0.21;
-  probabilities[5] = 0.11;
-  probabilities[6] = 0.05;
 }
 
 int from_random_to_value(std::vector<float> probabilities) {
@@ -171,8 +180,6 @@ int random_position(const int nb_of_objects_by_line) {
   if (parameters.difficulty == 1) {
     return random_uniform(7);
   } else {
-    std::vector<float> probabilities(7);
-    set_gaussian_probabilities(probabilities);
-    return from_random_to_value(probabilities);
+    return from_random_to_value(parameters.gaussian_probabilities);
   }
 }

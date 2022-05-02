@@ -2,8 +2,9 @@
 #include <vector>
 
 void set_difficulty(const int difficulty_gamer);
+void set_gaussian_probabilities();
 int random_uniform(const int nb_values);
-float time_until_combo(const float average_comboTime);
+float time_until_combo();
 void display_statistics();
 int random_rotation_direction();
 int random_shape(const int nb_of_shapes);

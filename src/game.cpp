@@ -33,7 +33,6 @@ void adding_different_objects(std::vector<Object> &different_objects) {
 void create_objects() {
   std::vector<Object> different_objects;
   Object unique_object(colors, nb_objects_by_line, game_state.latest_shape);
-  update_stats(unique_object.get_position().x, unique_object.get_position().y, unique_object.get_rotating_direction());
   different_objects.push_back(unique_object);
   objects.clear();
   objects.push_back(unique_object);
@@ -63,8 +62,10 @@ Position2D from_position_to_case(glm::vec2 position) {
 // Check if we clicked on the good object and give us point if we did
 void on_click(glm::vec2 mouse_position) {
   add_round_stats();
+  //not sure if the statistics should be on the time in general, or only when we clicked right ?
+  float time_combo = time_until_combo();
   if (from_position_to_case(mouse_position) == objects[0].get_position()) {
-    if (game_state.click_time < time_until_combo(1.)) {
+    if (game_state.click_time < time_combo) {
       std::cout << "le tps : " << game_state.click_time << std::endl;
       game_state.combo++;
     }
@@ -119,8 +120,8 @@ void show_score_and_combo(p6::Context &ctx, int score, int combo) {
 }
 
 void play_game(p6::Context &ctx, bool &is_playing, float game_start_time) {
-  set_difficulty(1);
-  if ((game_start_time + 5) - ctx.time() > 0.0000001f) {
+  set_difficulty(0);
+  if ((game_start_time + 60) - ctx.time() > 0.0000001f) {
     draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
     ctx.fill = {1., 1., 1., 0.8};
     ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
