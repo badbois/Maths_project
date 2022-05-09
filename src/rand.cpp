@@ -42,7 +42,7 @@ void set_difficulty(const int difficulty_gamer) {
     parameters.shape_markov = 0.1f;
     parameters.difficulty = 1;
     parameters.sigma = 0.2f;
-    parameters.lambda = 0.5;
+    parameters.lambda = 0.5f;
   } else {
     parameters.p = 0.5f;
     parameters.alpha = 0.9f;
@@ -64,33 +64,30 @@ void reload() {
   stats.exp.clear();
 }
 
-void add_positions_stats(int value){
-  stats.positions[value]++;
-}
+void add_positions_stats(int value) { stats.positions[value]++; }
 
-void add_rotation_stats(int rotation){
-  if(rotation==1){
+void add_rotation_stats(int rotation) {
+  if (rotation == 1) {
     stats.bernoulli++;
     stats.rademacher++;
   }
-  if(rotation==-1){
+  if (rotation == -1) {
     stats.bernoulli++;
   }
 }
 
-void update_stats(int posx, int posy, int rotation){
+void update_stats(int posx, int posy, int rotation) {
   add_positions_stats(posx);
   add_positions_stats(posy);
   add_rotation_stats(rotation);
   stats.nb_objects++;
 }
 
-void add_round_stats(){
-  stats.rounds++;
-}
+void add_round_stats() { stats.rounds++; }
 
 void display_statistics() {
-  statistic(stats, parameters.p, parameters.alpha, parameters.lambda, parameters.difficulty, parameters.gaussian_probabilities);
+  statistic(stats, parameters.p, parameters.alpha, parameters.lambda,
+            parameters.difficulty, parameters.gaussian_probabilities);
   reload();
 };
 
