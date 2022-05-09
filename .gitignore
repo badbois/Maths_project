@@ -1,4 +1,8 @@
 
 build/
 
-p6/
+lib/p6/
+
+.vscode/
+
+.DS_Store
