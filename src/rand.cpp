@@ -157,9 +157,15 @@ float time_until_combo() {
   return rand;
 }
 
-int random_rotation_direction() {
+float gaussian_rotation() {
+  float u1 = random_float(0.f, 1.f);
+  float u2 = random_float(0.f, 1.f);
+  return sqrt(-2 * log(u1)) * sin(2 * 3.14 * u2);
+}
+
+float random_rotation() {
   int rand = bernoulli(parameters.p);
-  return rand == 0 ? 0 : rademacher(parameters.alpha);
+  return rand == 0 ? 0 : gaussian_rotation();
 }
 
 int from_random_to_value(std::vector<float> probabilities) {

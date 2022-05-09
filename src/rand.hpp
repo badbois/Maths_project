@@ -6,7 +6,7 @@ void set_gaussian_probabilities();
 int random_uniform(const int nb_values);
 float time_until_combo();
 void display_statistics();
-int random_rotation_direction();
+float random_rotation();
 int random_shape(const int nb_of_shapes);
 int markov(int latest_shape);
 int random_color(const int nb_of_colors, const int unique_color);

@@ -9,15 +9,16 @@ void draw_object(p6::Context &ctx, const Object &object,
   switch (object.get_shape()) {
   case Shape::SQUARE:
     ctx.square(p6::Center{i, j}, p6::Radius{0.05f},
-               p6::Rotation{object.get_rotating_direction() * rotation});
+               p6::Rotation{rotation * object.get_Rotation()});
     break;
   case Shape::CIRCLE:
     ctx.circle(p6::Center{i, j}, p6::Radius{0.05f});
     break;
   case Shape::TRIANGLE:
     float cosinus =
-        cos(object.get_rotating_direction() * rotation.as_radians());
-    float sinus = sin(object.get_rotating_direction() * rotation.as_radians());
+        cos((rotation * object.get_Rotation()).as_radians());
+    float sinus =
+        sin((rotation * object.get_Rotation()).as_radians());
 
     ctx.triangle({cosinus * 0.05f - sinus * (-0.05f) + i,
                   sinus * 0.05f + cosinus * (-0.05f) + j},
