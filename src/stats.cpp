@@ -1,6 +1,8 @@
 #include "stats.hpp"
 #include "math.h"
 #include <iostream>
+#include <iostream>
+
 
 void display_rotation_mean(float mean, float p, int n) {
   std::cout << "Moyenne de rotation: " << mean << std::endl;

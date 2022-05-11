@@ -1,5 +1,4 @@
 #include <vector>
-#include <iostream>
 
 struct Statistics {
   std::vector<int> positions;
