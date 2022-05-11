@@ -1,4 +1,7 @@
 #include "score.hpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 void get_scoreboard(std::vector<int>& scoreboard) {
