@@ -1,8 +1,6 @@
 #include "stats.hpp"
 #include "math.h"
 #include <iostream>
-<<<<<<< HEAD
-=======
 
 struct Statistics {
   std::vector<int> positions;
@@ -13,7 +11,6 @@ struct Statistics {
   int rounds = 0;
   Statistics() : positions(7, 0){};
 };
->>>>>>> correction_Jules
 
 Statistics stats;
 
@@ -63,11 +60,8 @@ void display_exp(std::vector<float> exp, float lambda) {
   }
   standard_deviation = sqrt(standard_deviation / exp.size());
 
-<<<<<<< HEAD
-=======
   std::cout << "Sur un échantillon de " << exp.size() << "clics :" << std::endl;
 
->>>>>>> correction_Jules
   std::cout << "La moyenne de temps avant le prochain combo est : " << mean
             << std::endl;
   std::cout << "Théoriquement, cette moyenne était de : " << lambda
@@ -130,22 +124,10 @@ void display_uniform_position(std::vector<int> positions, int nb_objects,
   std::cout << std::endl;
 }
 
-<<<<<<< HEAD
-void statistic(Statistics stats, float p, float alpha, float lambda,
-               int difficulty, std::vector<float> gaussian_probabilities) {
-  // pas sure que ce soit très pertinent.. puis en plus faudrait compter
-  // autrement puisque c'est pas indépendant
-  // display_rotation_mean(stats.bernoulli, p, stats.nb_objects);
-  // display_rotation_direction_mean(stats.rademacher, 4);
-  display_exp(stats.exp, lambda);
-  display_uniform_position(stats.positions, stats.nb_objects, stats.rounds,
-                           difficulty, gaussian_probabilities);
-=======
 void statistic(float p, float alpha, float lambda, int difficulty,
                std::vector<float> gaussian_probabilities) {
   display_exp(stats.exp, lambda);
   display_uniform_position(stats.positions, stats.nb_objects, stats.rounds,
                            difficulty, gaussian_probabilities);
   reload();
->>>>>>> correction_Jules
 }
