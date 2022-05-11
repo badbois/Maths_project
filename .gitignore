@@ -6,3 +6,5 @@ lib/p6/
 .vscode/
 
 .DS_Store
+
+assets/scoreboard.txt

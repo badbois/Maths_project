@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
-int nb_objects_by_line = 7;
-int nb_first_objects = 8;
+static constexpr int nb_objects_by_line = 7;
+static constexpr int nb_first_objects = 8;
 float pas = 2. / (nb_objects_by_line + 1);
 std::vector<p6::Color> colors = {{1., 0., 0.},   {0., 1., 0.}, {0., 0., 1.},
                                  {1., 1., 0.},   {1., 0., 1.}, {0., 1., 1.},
