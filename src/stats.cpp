@@ -1,19 +1,46 @@
 #include "stats.hpp"
 #include "math.h"
 #include <iostream>
+<<<<<<< HEAD
+=======
 
-void display_rotation_mean(float mean, float p, int n) {
-  std::cout << "Moyenne de rotation: " << mean << std::endl;
-  std::cout << "(Moyenne de rotation théorique : " << n * p << ")" << std::endl;
-  std::cout << std::endl;
+struct Statistics {
+  std::vector<int> positions;
+  int bernoulli = 0;
+  int rademacher = 0;
+  int nb_objects = 0;
+  std::vector<float> exp;
+  int rounds = 0;
+  Statistics() : positions(7, 0){};
+};
+>>>>>>> correction_Jules
+
+Statistics stats;
+
+// update statistics
+
+void reload() {
+  for (int i = 0; i < stats.positions.size(); i++) {
+    stats.positions[i] = 0;
+  }
+  stats.nb_objects = 0;
+  stats.rounds = 0;
+  stats.exp.clear();
 }
 
-void display_rotation_direction_mean(float mean, float theorical_mean) {
-  std::cout << "Moyenne de sens de rotation: " << mean << std::endl;
-  std::cout << "(Moyenne de sens de rotation théorique : " << theorical_mean
-            << ")" << std::endl;
-  std::cout << std::endl;
+void add_positions_stats(int value) { stats.positions[value]++; }
+
+void add_exp_stats(float rand) { stats.exp.push_back(rand); }
+
+void update_stats(int posx, int posy, int rotation) {
+  add_positions_stats(posx);
+  add_positions_stats(posy);
+  stats.nb_objects++;
 }
+
+void add_round_stats() { stats.rounds++; }
+
+// display statistics
 
 void draw_line(int nb_line, int nb) {
 
@@ -36,6 +63,11 @@ void display_exp(std::vector<float> exp, float lambda) {
   }
   standard_deviation = sqrt(standard_deviation / exp.size());
 
+<<<<<<< HEAD
+=======
+  std::cout << "Sur un échantillon de " << exp.size() << "clics :" << std::endl;
+
+>>>>>>> correction_Jules
   std::cout << "La moyenne de temps avant le prochain combo est : " << mean
             << std::endl;
   std::cout << "Théoriquement, cette moyenne était de : " << lambda
@@ -98,6 +130,7 @@ void display_uniform_position(std::vector<int> positions, int nb_objects,
   std::cout << std::endl;
 }
 
+<<<<<<< HEAD
 void statistic(Statistics stats, float p, float alpha, float lambda,
                int difficulty, std::vector<float> gaussian_probabilities) {
   // pas sure que ce soit très pertinent.. puis en plus faudrait compter
@@ -107,4 +140,12 @@ void statistic(Statistics stats, float p, float alpha, float lambda,
   display_exp(stats.exp, lambda);
   display_uniform_position(stats.positions, stats.nb_objects, stats.rounds,
                            difficulty, gaussian_probabilities);
+=======
+void statistic(float p, float alpha, float lambda, int difficulty,
+               std::vector<float> gaussian_probabilities) {
+  display_exp(stats.exp, lambda);
+  display_uniform_position(stats.positions, stats.nb_objects, stats.rounds,
+                           difficulty, gaussian_probabilities);
+  reload();
+>>>>>>> correction_Jules
 }
