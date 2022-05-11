@@ -19,7 +19,6 @@ struct RandomParameters {
   RandomParameters() : gaussian_probabilities(7){};
 };
 
-Statistics stats;
 RandomParameters parameters;
 
 void set_gaussian_probabilities() {
@@ -53,43 +52,11 @@ void set_difficulty(const int difficulty_gamer) {
   }
 }
 
-void reload() {
-  for (int i = 0; i < stats.positions.size(); i++) {
-    stats.positions[i] = 0;
-  }
-  stats.bernoulli = 0;
-  stats.rademacher = 0;
-  stats.nb_objects = 0;
-  stats.rounds = 0;
-  stats.exp.clear();
-}
-
-void add_positions_stats(int value) { stats.positions[value]++; }
-
-void add_rotation_stats(int rotation) {
-  if (rotation == 1) {
-    stats.bernoulli++;
-    stats.rademacher++;
-  }
-  if (rotation == -1) {
-    stats.bernoulli++;
-  }
-}
-
-void update_stats(int posx, int posy, int rotation) {
-  add_positions_stats(posx);
-  add_positions_stats(posy);
-  add_rotation_stats(rotation);
-  stats.nb_objects++;
-}
-
-void add_round_stats() { stats.rounds++; }
-
 void display_statistics() {
-  statistic(stats, parameters.p, parameters.alpha, parameters.lambda,
+  statistic(parameters.p, parameters.alpha, parameters.lambda,
             parameters.difficulty, parameters.gaussian_probabilities);
-  reload();
 };
+
 
 int random_uniform(const int nb_values) {
   float rand = random_float(0.f, 1.f);
@@ -153,7 +120,6 @@ int random_shape(const int nb_of_shapes) {
 float time_until_combo() {
   float rand = random_float(0.f, 1.f);
   rand = -parameters.lambda * log(1 - rand);
-  stats.exp.push_back(rand);
   return rand;
 }
 

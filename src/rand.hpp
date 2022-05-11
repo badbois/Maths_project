@@ -16,7 +16,5 @@ int random_position(const int nb_of_objects_by_line);
 // called for combo
 float time_until_combo();
 
-// statistics
+// comparison theoric stats and real game results
 void display_statistics();
-void update_stats(int posx, int posy, int rotation);
-void add_round_stats();
