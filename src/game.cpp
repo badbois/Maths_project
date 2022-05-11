@@ -5,6 +5,7 @@
 #include "rand.hpp"
 #include "score.hpp"
 #include <string>
+#include <vector>
 
 int nb_objects_by_line = 7;
 int nb_first_objects = 8;
