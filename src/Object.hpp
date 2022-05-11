@@ -78,7 +78,7 @@ public:
     }
     return ((shape == other.get_shape()) &&
             (color_index == other.get_color_index()) &&
-            (abs(rotation.rotation-other.get_Rotation()) < 0.5) &&
+            (abs(rotation.rotation - other.get_Rotation()) < 0.5) &&
             (position == other.get_position()));
   }
 
