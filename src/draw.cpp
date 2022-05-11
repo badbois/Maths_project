@@ -3,8 +3,8 @@
 
 void draw_object(p6::Context &ctx, const Object &object,
                  const p6::Angle rotation, float pas) {
-  float i = -1. + (object.get_position().y + 1.) * pas;
-  float j = -1. + (object.get_position().x + 1.) * pas;
+  float i = -1.f + (object.get_position().y + 1.f) * pas;
+  float j = -1.f + (object.get_position().x + 1.f) * pas;
   ctx.fill = object.get_color();
   switch (object.get_shape()) {
   case Shape::SQUARE:
