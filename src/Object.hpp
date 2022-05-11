@@ -1,7 +1,6 @@
 #pragma once
 
 #include "rand.hpp"
-#include <iostream>
 #include <p6/p6.h>
 #include <vector>
 
