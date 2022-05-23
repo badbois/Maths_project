@@ -1,7 +1,11 @@
 #include "score.hpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 
-void get_scoreboard(std::vector<int>& scoreboard) {
+std::vector<int> get_scoreboard() {
+    std::vector<int> scoreboard;
     std::ifstream file;
     try{
         file.open("../assets/scoreboard.txt", std::ios::in);
@@ -14,11 +18,11 @@ void get_scoreboard(std::vector<int>& scoreboard) {
     catch(std::exception &e){
         std::cout << "Error while opening file" << std::endl;
     }
+    return scoreboard;
 } 
 
 void display_scoreboard(p6::Context &ctx){
-    std::vector<int> scoreboard;
-    get_scoreboard(scoreboard);
+    std::vector<int> scoreboard = get_scoreboard();
     ctx.background({0.f, 0.f, 0.f});
     ctx.fill = {1., 1., 1., 1};
     std::vector<std::u16string> scores;
@@ -43,8 +47,7 @@ void display_scoreboard(p6::Context &ctx){
 }
 
 void add_new_score(const int score){
-    std::vector<int> scoreboard;
-    get_scoreboard(scoreboard);
+    std::vector<int> scoreboard = get_scoreboard();
     for(int i=0; i<scoreboard.size(); i++){
         if(scoreboard[i]<score){
             scoreboard.insert(scoreboard.begin()+i,score);

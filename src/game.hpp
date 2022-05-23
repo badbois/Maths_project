@@ -1,12 +1,11 @@
 #include <p6/p6.h>
-#include <vector>
+
 
 struct GameState {
-  int combo;
-  float click_time;
-  int score;
-  int latest_shape;
-  GameState() : combo(1), click_time(0), score(0), latest_shape(0) {}
+  int combo {1};
+  float click_time {0};
+  int score{0};
+  int latest_shape{0};
 };
 
 void set_game_grid();

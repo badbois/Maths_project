@@ -4,11 +4,13 @@
 #include "game.hpp"
 #include "rand.hpp"
 #include "score.hpp"
+#include "stats.hpp"
 #include <string>
+#include <vector>
 
-int nb_objects_by_line = 7;
-int nb_first_objects = 8;
-float pas = 2. / (nb_objects_by_line + 1);
+static constexpr int nb_objects_by_line = 7;
+static constexpr int nb_first_objects = 8;
+static constexpr float pas = 2. / (nb_objects_by_line + 1);
 std::vector<p6::Color> colors = {{1., 0., 0.},   {0., 1., 0.}, {0., 0., 1.},
                                  {1., 1., 0.},   {1., 0., 1.}, {0., 1., 1.},
                                  {0.5, 0.5, 0.5}};
@@ -67,9 +69,8 @@ void on_click(glm::vec2 mouse_position) {
   float time_combo = time_until_combo();
   if (from_position_to_case(mouse_position) == objects[0].get_position()) {
     if (game_state.click_time < time_combo) {
-      // std::cout << "le tps : " << game_state.click_time << std::endl;
+      add_exp_stats(time_combo);
       game_state.combo += 1 / time_combo;
-      // std::cout << "COMBO : " << 1 / time_combo << std::endl;
     }
     game_state.score += game_state.combo * 10;
     if (game_state.combo < 7) {
@@ -78,8 +79,6 @@ void on_click(glm::vec2 mouse_position) {
   } else {
     game_state.combo = 1;
   };
-  // std::cout << "combot : " << game_state.combo << std::endl;
-  // std::cout << "Le score vaut : " << game_state.score << std::endl;
   set_game_grid();
   game_state.latest_shape = static_cast<int>(objects[0].get_shape());
   game_state.click_time = 0;

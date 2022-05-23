@@ -1,18 +1,18 @@
 #pragma once
 
 #include "rand.hpp"
-#include <iostream>
+#include "stats.hpp"
 #include <p6/p6.h>
 #include <vector>
 
-struct Rotating_direction {
-  int direction; // sens de rotation
-  Rotating_direction() : direction(0) {}
-  explicit Rotating_direction(int _direction) : direction(_direction){};
-  bool operator==(const Rotating_direction &other) const {
-    return direction == other.direction;
+struct Rotation {
+  float rotation; // sens de rotation
+  Rotation() : rotation(0) {}
+  explicit Rotation(float _rotation) : rotation(_rotation){};
+  bool operator==(const Rotation &other) const {
+    return rotation == other.rotation;
   };
-  bool operator==(const int other) const { return direction == other; }
+  bool operator==(const int other) const { return rotation == other; }
 };
 
 enum class Shape {
@@ -38,7 +38,7 @@ class Object {
 private:
   Shape shape;
   p6::Color color;
-  Rotating_direction rotating_direction;
+  Rotation rotation;
   Position2D position;
   int color_index;
 
@@ -46,28 +46,26 @@ public:
   // Default constructor
   Object()
       : shape(Shape::CIRCLE), color(p6::Color(1.f, 0.f, 0.f)),
-        rotating_direction(Rotating_direction()), position(Position2D(0, 0)){};
+        rotation(Rotation()), position(Position2D(0, 0)){};
 
   // Constructor
   explicit Object(const std::vector<p6::Color> &colors,
                   const int nb_objects_by_line)
       : shape(static_cast<Shape>(random_shape(static_cast<int>(Shape::count)))),
-        color_index(random_color(colors.size())),
-        rotating_direction(random_rotation_direction()),
+        color_index(random_color(colors.size())), rotation(random_rotation()),
         position(Position2D(0, 0)) {
-          color = colors[color_index];
-        }
+    color = colors[color_index];
+  }
 
   // Constructor for the unique object, for Markov chains he keeps the lastest
   // shape in mind
   explicit Object(const std::vector<p6::Color> &colors,
                   const int nb_objects_by_line, int latest_shape)
       : shape(static_cast<Shape>(markov(latest_shape))),
-        color_index(random_color(colors.size())),
-        rotating_direction(random_rotation_direction()),
+        color_index(random_color(colors.size())), rotation(random_rotation()),
         position(Position2D(0, 0)) {
-          color = colors[color_index];
-        }
+    color = colors[color_index];
+  }
 
   // Copy constructor
   Object(const Object &obj) = default;
@@ -81,7 +79,7 @@ public:
     }
     return ((shape == other.get_shape()) &&
             (color_index == other.get_color_index()) &&
-            (rotating_direction == other.get_rotating_direction()) &&
+            (abs(rotation.rotation - other.get_Rotation()) < 0.5) &&
             (position == other.get_position()));
   }
 
@@ -101,7 +99,7 @@ public:
 
   int get_color_index() const { return color_index; }
 
-  int get_rotating_direction() const { return rotating_direction.direction; }
+  float get_Rotation() const { return rotation.rotation; }
 
   Position2D get_position() const { return position; }
 };
@@ -111,7 +109,8 @@ inline void set_all_positions(std::vector<Object> &objects,
                               std::vector<Position2D> &positions) {
   for (int i = 0; i < objects.size(); i++) {
     objects[i].set_position(positions[i]);
-    update_stats(objects[i].get_position().x, objects[i].get_position().y, objects[i].get_rotating_direction());
+    update_stats(objects[i].get_position().x, objects[i].get_position().y,
+                 objects[i].get_Rotation());
   }
 }
 
