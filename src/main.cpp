@@ -5,8 +5,14 @@
 
 #include "Object.hpp"
 #include "draw.hpp"
-#include "game.hpp"
+#include "gaming.hpp"
 #include "score.hpp"
+
+#include "Game/Game.hpp"
+
+Playing_State Game::playing;
+Menu_State Game::menu;
+Scoreboard_State Game::scoreboard;
 
 void show_menu(p6::Context &ctx, bool &is_playing, bool &is_scoreboard,
                float &game_start_time) {
@@ -39,6 +45,8 @@ void show_menu(p6::Context &ctx, bool &is_playing, bool &is_scoreboard,
 };
 
 int main() {
+  Game game;
+  game.change_state(&Game::menu);
   try {
     auto ctx = p6::Context{{720, 720, "Unique project"}};
     ctx.time_perceived_as_realtime();
@@ -54,13 +62,14 @@ int main() {
     ctx.update = [&]() {
       ctx.background({0.f, 0.f, 0.f});
       ctx.fill = {1., 1., 1., 1};
-      if (is_playing && !is_scoreboard) {
-        play_game(ctx, is_playing, game_start_time);
-      } else if (!is_playing && !is_scoreboard) {
-        show_menu(ctx, is_playing, is_scoreboard, game_start_time);
-      } else if (is_scoreboard) {
-        display_scoreboard(ctx);
-      }
+      game.update(ctx);
+      // if (is_playing && !is_scoreboard) {
+      //   play_game(ctx, is_playing, game_start_time);
+      // } else if (!is_playing && !is_scoreboard) {
+      //   show_menu(ctx, is_playing, is_scoreboard, game_start_time);
+      // } else if (is_scoreboard) {
+      //   display_scoreboard(ctx);
+      // }
     };
     ctx.start();
   }

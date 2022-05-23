@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "draw.hpp"
-#include "game.hpp"
+#include "gaming.hpp"
 #include "rand.hpp"
 #include "score.hpp"
 #include "stats.hpp"
@@ -16,7 +16,7 @@ std::vector<p6::Color> colors = {{1., 0., 0.},   {0., 1., 0.}, {0., 0., 1.},
                                  {0.5, 0.5, 0.5}};
 std::vector<Object> objects;
 
-GameState game_state;
+Game_Infos game_state;
 
 // fill different_objects with different objects
 void adding_different_objects(std::vector<Object> &different_objects) {
@@ -120,23 +120,19 @@ void show_score_and_combo(p6::Context &ctx, int score, int combo) {
            p6::Center{0.f, 0.9f});
 }
 
-void play_game(p6::Context &ctx, bool &is_playing, float game_start_time) {
-  set_difficulty(0);
-  if ((game_start_time + 60) - ctx.time() > 0.0000001f) {
-    draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
-    ctx.fill = {1., 1., 1., 0.8};
-    ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
-    game_state.click_time += 0.01;
+void play_game(p6::Context &ctx, float game_start_time) {
+  draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
+  ctx.fill = {1., 1., 1., 0.8};
+  ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
+  game_state.click_time += 0.01;
 
-    show_score_and_combo(ctx, game_state.score, game_state.combo);
-    show_time_left(ctx, game_start_time);
+  show_score_and_combo(ctx, game_state.score, game_state.combo);
+  show_time_left(ctx, game_start_time);
+}
 
-    ctx.mouse_pressed = [&ctx](p6::MouseButton) { on_click(ctx.mouse()); };
-  } else {
-    add_new_score(game_state.score);
-    reset_game_state();
-    is_playing = false;
-    display_statistics();
-    set_game_grid();
-  }
+void end_game() {
+  add_new_score(game_state.score);
+  reset_game_state();
+  display_statistics();
+  set_game_grid();
 }
