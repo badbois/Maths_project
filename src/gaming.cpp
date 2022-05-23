@@ -134,29 +134,29 @@ void play_game(p6::Context &ctx, float game_start_time) {
 
 void end_game() {
   add_new_score(game_infos.score);
-  reset_game_infos();
   display_statistics();
   set_game_grid();
+  std::vector<int> scoreboard = get_scoreboard();
+  if (*std::min_element(std::begin(scoreboard), std::end(scoreboard)) <
+      game_infos.score) {
+    game_infos.victory = true;
+  } else {
+    game_infos.victory = false;
+  }
+  reset_game_infos();
 }
 
 void show_end_game(p6::Context &ctx) {
-  std::vector<int> scoreboard = get_scoreboard();
-  if (*std::max_element(std::begin(scoreboard), std::end(scoreboard)) <
-      game_infos.score) {
-    ctx.text_size = 0.06f;
+  ctx.text_size = 0.06f;
+  if (game_infos.victory) {
     ctx.text(u"BRAVO", p6::Center{0.f, 0.8f});
     ctx.text_size = 0.025f;
     ctx.text(u"Tu es dans les 3 meilleurs", p6::Center{0.f, 0.5f});
-    ctx.text_size = 0.05f;
-    ctx.text(u"Voir scores:S", p6::Center{0.f, -0.1f});
-    ctx.text(u"Retour menu:M", p6::Center{0.f, -0.3f});
   } else {
-    ctx.text_size = 0.06f;
     ctx.text(u"DOMMAGE", p6::Center{0.f, 0.8f});
     ctx.text_size = 0.025f;
     ctx.text(u"Tu n'es pas dans les 3 meilleurs", p6::Center{0.f, 0.5f});
-    ctx.text_size = 0.05f;
-    ctx.text(u"Voir scores:S", p6::Center{0.f, -0.1f});
-    ctx.text(u"Retour menu:M", p6::Center{0.f, -0.3f});
   }
+  ctx.text(u"Voir scores:S", p6::Center{0.f, -0.1f});
+  ctx.text(u"Retour menu:M", p6::Center{0.f, -0.3f});
 }

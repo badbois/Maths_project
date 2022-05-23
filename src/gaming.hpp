@@ -5,6 +5,7 @@ struct Game_Infos {
   float click_time{0};
   int score{0};
   int latest_shape{0};
+  bool victory = false;
 };
 
 void set_game_grid();
