@@ -1,18 +1,15 @@
+#include "../gaming.hpp"
 #include "../rand.hpp"
 #include "Game.hpp"
 
 void Menu_State::handleInput(Game &game, const Input &input, p6::Context &ctx) {
   if (input.key.logical == "q") {
     ctx.stop();
-  } else if (input.key.logical == "e") {
+  } else if (input.key.logical == "e" or input.key.logical == "d") {
     game.playing.set_time(ctx.time());
-    set_difficulty(0);
+    input.key.logical == "e" ? set_difficulty(0) : set_difficulty(1);
     set_gaussian_probabilities();
-    game.change_state(&Game::playing);
-  } else if (input.key.logical == "d") {
-    set_difficulty(1);
-    game.playing.set_time(ctx.time());
-    set_gaussian_probabilities();
+    set_game_grid();
     game.change_state(&Game::playing);
   } else if (input.key.logical == "s") {
     game.change_state(&Game::scoreboard);

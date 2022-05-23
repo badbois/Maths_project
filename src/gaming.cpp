@@ -16,7 +16,7 @@ std::vector<p6::Color> colors = {{1., 0., 0.},   {0., 1., 0.}, {0., 0., 1.},
                                  {0.5, 0.5, 0.5}};
 std::vector<Object> objects;
 
-Game_Infos game_state;
+Game_Infos game_infos;
 
 // fill different_objects with different objects
 void adding_different_objects(std::vector<Object> &different_objects) {
@@ -34,7 +34,7 @@ void adding_different_objects(std::vector<Object> &different_objects) {
 // Create and fill the objects vector with unique objects at the first place
 void create_objects() {
   std::vector<Object> different_objects;
-  Object unique_object(colors, nb_objects_by_line, game_state.latest_shape);
+  Object unique_object(colors, nb_objects_by_line, game_infos.latest_shape);
   different_objects.push_back(unique_object);
   objects.clear();
   objects.push_back(unique_object);
@@ -68,28 +68,28 @@ void on_click(glm::vec2 mouse_position) {
   // we clicked right ?
   float time_combo = time_until_combo();
   if (from_position_to_case(mouse_position) == objects[0].get_position()) {
-    if (game_state.click_time < time_combo) {
+    if (game_infos.click_time < time_combo) {
       add_exp_stats(time_combo);
-      game_state.combo += 1 / time_combo;
+      game_infos.combo += 1 / time_combo;
     }
-    game_state.score += game_state.combo * 10;
-    if (game_state.combo < 7) {
-      game_state.combo++;
+    game_infos.score += game_infos.combo * 10;
+    if (game_infos.combo < 7) {
+      game_infos.combo++;
     };
   } else {
-    game_state.combo = 1;
+    game_infos.combo = 1;
   };
   set_game_grid();
-  game_state.latest_shape = static_cast<int>(objects[0].get_shape());
-  game_state.click_time = 0;
+  game_infos.latest_shape = static_cast<int>(objects[0].get_shape());
+  game_infos.click_time = 0;
 }
 
 // Reset the game state after the end of the game
-void reset_game_state() {
-  game_state.score = 0;
-  game_state.combo = 1;
-  game_state.click_time = 0;
-  game_state.latest_shape = 0;
+void reset_game_infos() {
+  game_infos.score = 0;
+  game_infos.combo = 1;
+  game_infos.click_time = 0;
+  game_infos.latest_shape = 0;
 }
 
 // Display the lefting time in the top right corner
@@ -118,21 +118,45 @@ void show_score_and_combo(p6::Context &ctx, int score, int combo) {
 
   ctx.text(u"score:" + score_u16string + u"  combo:x" + combo_u16string,
            p6::Center{0.f, 0.9f});
+  ctx.text_size = 0.02f;
+  ctx.text(u"retour:M", p6::Center{-0.75f, 0.9f});
 }
 
 void play_game(p6::Context &ctx, float game_start_time) {
   draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
   ctx.fill = {1., 1., 1., 0.8};
   ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
-  game_state.click_time += 0.01;
+  game_infos.click_time += 0.01;
 
-  show_score_and_combo(ctx, game_state.score, game_state.combo);
+  show_score_and_combo(ctx, game_infos.score, game_infos.combo);
   show_time_left(ctx, game_start_time);
 }
 
 void end_game() {
-  add_new_score(game_state.score);
-  reset_game_state();
+  add_new_score(game_infos.score);
+  reset_game_infos();
   display_statistics();
   set_game_grid();
+}
+
+void show_end_game(p6::Context &ctx) {
+  std::vector<int> scoreboard = get_scoreboard();
+  if (*std::max_element(std::begin(scoreboard), std::end(scoreboard)) <
+      game_infos.score) {
+    ctx.text_size = 0.06f;
+    ctx.text(u"BRAVO", p6::Center{0.f, 0.8f});
+    ctx.text_size = 0.025f;
+    ctx.text(u"Tu es dans les 3 meilleurs", p6::Center{0.f, 0.5f});
+    ctx.text_size = 0.05f;
+    ctx.text(u"Voir scores:S", p6::Center{0.f, -0.1f});
+    ctx.text(u"Retour menu:M", p6::Center{0.f, -0.3f});
+  } else {
+    ctx.text_size = 0.06f;
+    ctx.text(u"DOMMAGE", p6::Center{0.f, 0.8f});
+    ctx.text_size = 0.025f;
+    ctx.text(u"Tu n'es pas dans les 3 meilleurs", p6::Center{0.f, 0.5f});
+    ctx.text_size = 0.05f;
+    ctx.text(u"Voir scores:S", p6::Center{0.f, -0.1f});
+    ctx.text(u"Retour menu:M", p6::Center{0.f, -0.3f});
+  }
 }

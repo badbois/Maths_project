@@ -14,7 +14,7 @@ void Playing_State::update(Game &game, p6::Context &ctx) {
     play_game(ctx, this->start_time);
   } else {
     end_game();
-    game.change_state(&Game::menu);
+    game.change_state(&Game::end);
   }
   ctx.mouse_pressed = [&](p6::MouseButton mouse) {
     Input input(mouse);

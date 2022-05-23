@@ -38,14 +38,19 @@ public:
   virtual void handleInput(Game &game, const Input &input, p6::Context &ctx);
 
   virtual void update(Game &game, p6::Context &ctx);
-
-private:
-  //
 };
 
 class Scoreboard_State : public Game_State {
 public:
   Scoreboard_State() {}
+
+  virtual void handleInput(Game &game, const Input &input, p6::Context &ctx);
+  virtual void update(Game &game, p6::Context &ctx);
+};
+
+class End_State : public Game_State {
+public:
+  End_State() {}
 
   virtual void handleInput(Game &game, const Input &input, p6::Context &ctx);
   virtual void update(Game &game, p6::Context &ctx);
@@ -56,9 +61,11 @@ private:
 
 class Game {
 public:
+  ~Game() {}
   static Playing_State playing;
   static Menu_State menu;
   static Scoreboard_State scoreboard;
+  static End_State end;
   virtual void handleInput(const Input &input, p6::Context &ctx) {
     state_->handleInput(*this, input, ctx);
   }

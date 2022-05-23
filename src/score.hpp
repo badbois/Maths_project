@@ -5,3 +5,4 @@
 
 void display_scoreboard(p6::Context &ctx);
 void add_new_score(const int scores);
+std::vector<int> get_scoreboard();
