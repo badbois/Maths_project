@@ -9,10 +9,8 @@
 
 struct RandomParameters {
   float p = 0.5f;
-  float alpha = 0.9f;
   float shape_markov = 0.5f;
   int difficulty = 0;
-  float sigma = 5.f;
   float lambda = 1.f;
   std::vector<float> gaussian_probabilities;
 
@@ -22,8 +20,6 @@ struct RandomParameters {
 RandomParameters parameters;
 
 void set_gaussian_probabilities() {
-  // on va essayer d'automatiser plus tard mais jsp si on la droit d'utiliser la
-  // loi gaussienne juste pour calculer les proba.. je demanderai au prof
   parameters.gaussian_probabilities[0] = 0.04775;
   parameters.gaussian_probabilities[1] = 0.1109;
   parameters.gaussian_probabilities[2] = 0.2108;
@@ -37,26 +33,21 @@ void set_difficulty(const int difficulty_gamer) {
   if (difficulty_gamer == 1) {
     // jsp si c'est + ou - dur si tu tournes ou pas, à voir
     parameters.p = 0.9f;
-    parameters.alpha = 0.5f;
-    parameters.shape_markov = 0.1f;
+    parameters.shape_markov = 0.2f;
     parameters.difficulty = 1;
-    parameters.sigma = 0.2f;
     parameters.lambda = 0.5f;
   } else {
     parameters.p = 0.5f;
-    parameters.alpha = 0.9f;
-    parameters.shape_markov = 0.5f;
+    parameters.shape_markov = 0.6f;
     parameters.difficulty = 0;
-    parameters.sigma = 5.f;
     parameters.lambda = 1.f;
   }
 }
 
 void display_statistics() {
-  statistic(parameters.p, parameters.alpha, parameters.lambda,
+  statistic(parameters.p, parameters.lambda,
             parameters.difficulty, parameters.gaussian_probabilities);
 };
-
 
 int random_uniform(const int nb_values) {
   float rand = random_float(0.f, 1.f);
@@ -91,32 +82,27 @@ int bernoulli(const float p) {
   return rand < p ? 1 : 0;
 }
 
-int rademacher(const float alpha) {
-  float rand = random_float(0.f, 1.f);
-  return rand < alpha ? 1 : -1;
-}
-
-// for unique object
 int markov(const int latest_shape) {
   float rand = random_float(0.f, 1.f);
   if (rand < parameters.shape_markov) {
     return latest_shape;
   }
   if (latest_shape == 0) {
+    // random between 1 and 2
     return 1 + random_uniform(2);
   } else if (latest_shape == 1) {
+    // random between 0 and 2
     return 2 * random_uniform(2);
   } else {
+    // random between 0 and 1
     return random_uniform(2);
   }
 }
 
-// for other objects
 int random_shape(const int nb_of_shapes) {
   return random_uniform(nb_of_shapes);
 }
 
-// for combos
 float time_until_combo() {
   float rand = random_float(0.f, 1.f);
   rand = -parameters.lambda * log(1 - rand);
