@@ -3,10 +3,11 @@
 
 void Playing_State::handleInput(Game &game, const Input &input,
                                 p6::Context &ctx) {
-  if (input.key.logical == "q") {
+  if (input.state == 0 && input.key.logical == "m") {
     game.change_state(&Game::menu);
+  } else if (input.state == 1) {
+    on_click(ctx.mouse());
   }
-  on_click(ctx.mouse());
 }
 
 void Playing_State::update(Game &game, p6::Context &ctx) {

@@ -5,8 +5,9 @@ class Game;
 struct Input {
   p6::Key key;
   p6::MouseButton mouse;
-  Input(p6::Key new_key) : key(new_key), mouse(){};
-  Input(p6::MouseButton new_mouse) : mouse(new_mouse), key() {}
+  int state; // 0 for key, 1 for mouse
+  Input(p6::Key new_key) : key(new_key), mouse(), state(0){};
+  Input(p6::MouseButton new_mouse) : mouse(new_mouse), key(), state(1) {}
 };
 
 class Game_State {
