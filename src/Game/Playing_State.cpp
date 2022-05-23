@@ -4,6 +4,7 @@
 void Playing_State::handleInput(Game &game, const Input &input,
                                 p6::Context &ctx) {
   if (input.state == 0 && input.key.logical == "m") {
+    reset_game_infos();
     game.change_state(&Game::menu);
   } else if (input.state == 1) {
     on_click(ctx.mouse());
