@@ -13,6 +13,8 @@ void Menu_State::handleInput(Game &game, const Input &input, p6::Context &ctx) {
     game.change_state(&Game::playing);
   } else if (input.key.logical == "s") {
     game.change_state(&Game::scoreboard);
+  } else if (input.key.logical == "r") {
+    game.change_state(&Game::rules);
   }
 }
 

@@ -125,7 +125,7 @@ void show_score_and_combo(p6::Context &ctx, int score, int combo) {
 void play_game(p6::Context &ctx, float game_start_time) {
   draw_grid_of_objects(ctx, objects, ctx.time() * 0.1_turn, pas);
   ctx.fill = {1., 1., 1., 0.8};
-  ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
+  // ctx.circle(p6::Center{ctx.mouse()}, p6::Radius{0.03f});
   game_infos.click_time += 0.01;
 
   show_score_and_combo(ctx, game_infos.score, game_infos.combo);

@@ -8,6 +8,7 @@
 Playing_State Game::playing;
 Menu_State Game::menu;
 Scoreboard_State Game::scoreboard;
+Rules_State Game::rules;
 End_State Game::end;
 
 int main() {
