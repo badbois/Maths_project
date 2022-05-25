@@ -3,16 +3,20 @@
 void display_rules(p6::Context &ctx) {
   ctx.background({0.f, 0.f, 0.f});
   ctx.fill = {1., 1., 1., 1};
-  ctx.text_size = 0.025f;
-  ctx.text(u"Click on the", p6::Center{0.f, 0.4f});
-  ctx.text(u"single unique shape ", p6::Center{0.f, 0.3f});
-  ctx.text(u"to earn points. If you suceed", p6::Center{0.f, 0.2f});
-  ctx.text(u"you gain some combo multiplicator,", p6::Center{0.f, 0.1f});
-  ctx.text(u"if it's fast enougth", p6::Center{0.f, 0.0f});
-  ctx.text(u"you gain more combo", p6::Center{0.f, -0.1f});
-  ctx.text(u"if you fail, the combo multiplicator ", p6::Center{0.f, -0.2f});
-  ctx.text(u"is reset. You have a minute.", p6::Center{0.f, -0.3f});
-
+  ctx.text_size = 0.03f;
+  ctx.text(u"Click on the single unique", p6::Center{0.f, 0.5f});
+  ctx.text(u"shape to earn points.", p6::Center{0.f, 0.4f});
+  ctx.text(u"If you suceed you gain", p6::Center{0.f, 0.2f});
+  ctx.text(u"some combo multiplicator", p6::Center{0.f, 0.1f});
+  ctx.text(u"If it's fast enough", p6::Center{0.f, 0.0f});
+  ctx.text(u"you gain more combo,", p6::Center{0.f, -0.1f});
+  ctx.text(u"if you fail,", p6::Center{0.f, -0.2f});
+  ctx.text(u"the combo multiplicator", p6::Center{0.f, -0.3f});
+  ctx.text(u"is reset", p6::Center{0.f, -0.4f});
+  ctx.fill = {1., 0., 0., 1};
+  ctx.text_size = 0.04f;
+  ctx.text(u"You have a minute ", p6::Center{0.f, -0.6f});
+  ctx.fill = {1., 1., 1., 1};
   ctx.text_size = 0.02f;
   ctx.text(u"retour:M", p6::Center{0.8f, 0.9f});
 }

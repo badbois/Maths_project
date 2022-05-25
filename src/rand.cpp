@@ -13,7 +13,7 @@ struct RandomParameters {
   float shape_markov = 0.5f;
   int difficulty = 0;
   float sigma = 5.f;
-  float lambda = 1.f;
+  float gamma = 3.f;
   std::vector<float> gaussian_probabilities;
 
   RandomParameters() : gaussian_probabilities(7){};
@@ -41,22 +41,21 @@ void set_difficulty(const int difficulty_gamer) {
     parameters.shape_markov = 0.1f;
     parameters.difficulty = 1;
     parameters.sigma = 0.2f;
-    parameters.lambda = 0.5f;
+    parameters.gamma = 1.f;
   } else {
     parameters.p = 0.5f;
     parameters.alpha = 0.9f;
     parameters.shape_markov = 0.5f;
     parameters.difficulty = 0;
     parameters.sigma = 5.f;
-    parameters.lambda = 1.f;
+    parameters.gamma = 3.f;
   }
 }
 
 void display_statistics() {
-  statistic(parameters.p, parameters.alpha, parameters.lambda,
+  statistic(parameters.p, parameters.alpha, parameters.gamma,
             parameters.difficulty, parameters.gaussian_probabilities);
 };
-
 
 int random_uniform(const int nb_values) {
   float rand = random_float(0.f, 1.f);
@@ -119,7 +118,7 @@ int random_shape(const int nb_of_shapes) {
 // for combos
 float time_until_combo() {
   float rand = random_float(0.f, 1.f);
-  rand = -parameters.lambda * log(1 - rand);
+  rand = -parameters.gamma * log(1 - rand);
   return rand;
 }
 

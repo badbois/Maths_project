@@ -14,6 +14,7 @@ void Playing_State::handleInput(Game &game, const Input &input,
 void Playing_State::update(Game &game, p6::Context &ctx) {
   if ((this->start_time + this->time_game - ctx.time()) > 0.0000001f) {
     play_game(ctx, this->start_time);
+    show_combo(ctx);
   } else {
     end_game();
     game.change_state(&Game::end);
