@@ -48,8 +48,8 @@ void set_difficulty(const int difficulty_gamer) {
 }
 
 void display_statistics() {
-  statistic(parameters.p, parameters.alpha, parameters.gamma,
-            parameters.difficulty, parameters.gaussian_probabilities);
+  statistic(parameters.p, parameters.gamma, parameters.difficulty,
+            parameters.gaussian_probabilities);
 };
 
 int random_uniform(const int nb_values) {

@@ -143,7 +143,7 @@ void display_position(std::vector<int> positions, int nb_objects, int rounds,
   std::cout << std::endl;
 }
 
-void statistic(float p, float alpha, float gamma, int difficulty,
+void statistic(float p, float gamma, int difficulty,
                std::vector<float> gaussian_probabilities) {
   if (stats.exp.size() > 0) {
     display_exp(stats.exp, gamma);
