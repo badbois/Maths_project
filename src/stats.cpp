@@ -48,7 +48,7 @@ void draw_line(int nb_line, int nb) {
   std::cout << std::endl;
 }
 
-void display_exp(std::vector<float> exp, float lambda) {
+void display_exp(std::vector<float> exp, float gamma) {
   float mean = 0;
   for (int i = 0; i < exp.size(); i++) {
     mean += exp[i];
@@ -65,11 +65,10 @@ void display_exp(std::vector<float> exp, float lambda) {
 
   std::cout << "La moyenne de temps avant le prochain combo est : " << mean
             << std::endl;
-  std::cout << "Théoriquement, cette moyenne était de : " << lambda
-            << std::endl;
+  std::cout << "Théoriquement, cette moyenne était de : " << gamma << std::endl;
 
   std::cout << "L'écart type associé est : " << standard_deviation << std::endl;
-  std::cout << "Théoriquement, cet écart type était de : " << lambda
+  std::cout << "Théoriquement, cet écart type était de : " << gamma
             << std::endl;
 
   std::cout << std::endl;
@@ -144,10 +143,10 @@ void display_position(std::vector<int> positions, int nb_objects, int rounds,
   std::cout << std::endl;
 }
 
-void statistic(float p, float lambda, int difficulty,
+void statistic(float p, float alpha, float gamma, int difficulty,
                std::vector<float> gaussian_probabilities) {
   if (stats.exp.size() > 0) {
-    display_exp(stats.exp, lambda);
+    display_exp(stats.exp, gamma);
   }
   display_position(stats.positions, stats.nb_objects, stats.rounds, difficulty,
                    gaussian_probabilities);

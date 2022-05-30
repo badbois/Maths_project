@@ -40,10 +40,6 @@ void display_scoreboard(p6::Context &ctx){
 
     ctx.text_size = 0.02f;
     ctx.text(u"retour:M", p6::Center{0.8f, 0.9f});
-
-
-
-    
 }
 
 void add_new_score(const int score){

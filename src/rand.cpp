@@ -11,7 +11,8 @@ struct RandomParameters {
   float p = 0.5f;
   float shape_markov = 0.5f;
   int difficulty = 0;
-  float lambda = 1.f;
+  float sigma = 5.f;
+  float gamma = 3.f;
   std::vector<float> gaussian_probabilities;
 
   RandomParameters() : gaussian_probabilities(7){};
@@ -35,17 +36,19 @@ void set_difficulty(const int difficulty_gamer) {
     parameters.p = 0.9f;
     parameters.shape_markov = 0.2f;
     parameters.difficulty = 1;
-    parameters.lambda = 0.5f;
+    parameters.sigma = 0.2f;
+    parameters.gamma = 1.f;
   } else {
     parameters.p = 0.5f;
     parameters.shape_markov = 0.6f;
     parameters.difficulty = 0;
-    parameters.lambda = 1.f;
+    parameters.sigma = 5.f;
+    parameters.gamma = 3.f;
   }
 }
 
 void display_statistics() {
-  statistic(parameters.p, parameters.lambda,
+  statistic(parameters.p, parameters.alpha, parameters.gamma,
             parameters.difficulty, parameters.gaussian_probabilities);
 };
 
@@ -105,13 +108,19 @@ int random_shape(const int nb_of_shapes) {
 
 float time_until_combo() {
   float rand = random_float(0.f, 1.f);
-  rand = -parameters.lambda * log(1 - rand);
+  rand = -parameters.gamma * log(1 - rand);
   return rand;
 }
 
 float gaussian_rotation() {
   float u1 = random_float(0.f, 1.f);
   float u2 = random_float(0.f, 1.f);
+  while (u1 == 0.f) {
+    u1 = random_float(0.f, 1.f);
+  }
+  while (u2 == 0.f) {
+    u2 = random_float(0.f, 1.f);
+  }
   return sqrt(-2 * log(u1)) * sin(2 * 3.14 * u2);
 }
 
