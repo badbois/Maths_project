@@ -18,7 +18,7 @@ void display_rules(p6::Context &ctx) {
   ctx.text(u"You have a minute ", p6::Center{0.f, -0.6f});
   ctx.fill = {1., 1., 1., 1};
   ctx.text_size = 0.02f;
-  ctx.text(u"retour:M", p6::Center{0.8f, 0.9f});
+  ctx.text(u"menu:M", p6::Center{0.8f, 0.9f});
 }
 
 void Rules_State::handleInput(Game &game, const Input &input,

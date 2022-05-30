@@ -39,7 +39,7 @@ void display_scoreboard(p6::Context &ctx){
     ctx.text(u"3: "+ scores[2], p6::Center{0.f, -0.2f});
 
     ctx.text_size = 0.02f;
-    ctx.text(u"retour:M", p6::Center{0.8f, 0.9f});
+    ctx.text(u"menu:M", p6::Center{0.8f, 0.9f});
 }
 
 void add_new_score(const int score){
