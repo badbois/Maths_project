@@ -40,7 +40,7 @@ void create_objects() {
   objects.push_back(unique_object);
   adding_different_objects(different_objects);
   for (int i = 1; i < different_objects.size(); i++) {
-    for (int j = 2; j < 5; j++) {
+    for (int j = 0; j < 3; j++) {
       objects.push_back(different_objects[i]);
     }
   }
